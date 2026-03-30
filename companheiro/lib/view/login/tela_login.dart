@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 import '/view/login/esqueceu_senha.dart';
 import '/view/login/cadastro.dart';
-import '/view/home.dart';
+import '../home/home.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -31,6 +31,10 @@ class _TelaLoginState extends State<TelaLogin> {
   int _opcaoSelecionada = 0;
 
 //final ctrl = GetIt.I.get<AuthProvider>();
+// Se quem fez o login foi uma ONG:
+//Provider.of<ThemeController>(context, listen: false).setProfileType(isNgoProfile: true);
+
+// E então navega para a Home...
 
 
   @override

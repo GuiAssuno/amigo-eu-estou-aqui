@@ -4,7 +4,7 @@ import '/view/ongs/ongs_page.dart';
 import '/view/animais/animal_page.dart';
 import '/view/voluntarios/voluntario_page.dart';
 import '/view/sobre/sobre.dart';
-import '/view/home.dart';
+import 'home.dart';
 import '/view/login/tela_login.dart';
 import '/view/voluntarios/profile_page.dart';
 
