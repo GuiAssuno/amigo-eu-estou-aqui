@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
-
-class AnimalPage extends StatelessWidget {
-  const AnimalPage({super.key});
+class TelaSobre extends StatelessWidget {
+  const TelaSobre({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Animais'),
+        title: Text('Sobre'),
       ),
       body: Center(
-        child: Text('Lista de Animais'),
+        child: Text('Informações sobre o aplicativo'),
       ),
     );
   }

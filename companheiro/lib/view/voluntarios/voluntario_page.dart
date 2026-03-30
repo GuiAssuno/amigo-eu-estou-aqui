@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
-
-class AnimalPage extends StatelessWidget {
-  const AnimalPage({super.key});
+class VoluntarioPage extends StatelessWidget {
+  const VoluntarioPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Animais'),
+        title: Text('Voluntários'),
       ),
       body: Center(
-        child: Text('Lista de Animais'),
+        child: Text('Lista de Voluntários'),
       ),
     );
   }

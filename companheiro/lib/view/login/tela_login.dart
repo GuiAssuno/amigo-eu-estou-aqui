@@ -218,8 +218,7 @@ class _TelaLoginState extends State<TelaLogin> {
       SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () => Navigator.push(
-            context,
+          onPressed: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const Home()),
           ),
           child: _carregando
@@ -228,7 +227,13 @@ class _TelaLoginState extends State<TelaLogin> {
                   width: 20,
                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                 )
-              : const Text('Entrar', style: TextStyle(fontSize: 16)),
+              : const Text('Entrar', 
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                  )
+                ),
         ),
       ),
         ],
