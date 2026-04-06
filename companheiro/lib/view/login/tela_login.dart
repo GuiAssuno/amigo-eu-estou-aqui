@@ -29,6 +29,8 @@ class _TelaLoginState extends State<TelaLogin> {
   bool _senhaOculta = true;
   bool _carregando = false;
   int _opcaoSelecionada = 0;
+  
+  get SvgPicture => null;
 
 //final ctrl = GetIt.I.get<AuthProvider>();
 // Se quem fez o login foi uma ONG:
@@ -63,9 +65,10 @@ class _TelaLoginState extends State<TelaLogin> {
                         ),
                       ],
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        //SvgPicture.asset('assets/logo.svg'),
                         Icon(Icons.volunteer_activism, color: Color(0xFFE7DFD5), size: 44),
                       ],
                     ),

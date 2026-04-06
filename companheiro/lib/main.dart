@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/gestures.dart';
+
 
 import 'view/login/tela_login.dart';
 import 'controller/controle_tema.dart';
@@ -34,6 +36,10 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Companheiro',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
+      ),
+
       
       //theme: themeController.isNgo ? AppThemes.ngoLight : AppThemes.userLight,
       //darkTheme: themeController.isNgo ? AppThemes.ngoDark : AppThemes.userDark,
@@ -79,6 +85,14 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFFDF6EE),
       ),
 
+
+
+
+
+
+
+
+
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 76, 76, 175),
@@ -97,7 +111,7 @@ class MainApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF4CAF7D),
-            foregroundColor: Colors.white,
+            foregroundColor: const Color.fromARGB(255, 170, 73, 73),
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
