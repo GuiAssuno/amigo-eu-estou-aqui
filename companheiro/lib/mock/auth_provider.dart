@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import '/model/modelos.dart';
+import '../models/models.dart';
 
-class Autenticador extends ChangeNotifier {
+class AuthProvider extends ChangeNotifier {
   Usuario? _usuarioLogado;
   final List<Usuario> _usuarios = [];
   String? _erro;
@@ -29,10 +29,10 @@ class Autenticador extends ChangeNotifier {
       return false;
     }
     // Usuário demo fixo
-    if (email == 'gui@teste.com' && senha == '1234') {
+    if (email == 'demo@hub.com' && senha == '123456') {
       _usuarioLogado = Usuario(
         id: '0',
-        nome: 'Gui',
+        nome: 'Usuário Demo',
         email: email,
         telefone: '(16) 99999-0000',
         senha: senha,

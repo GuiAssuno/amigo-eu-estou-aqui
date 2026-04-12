@@ -21,12 +21,6 @@ class AnimalController extends ChangeNotifier {
 
 
 
-
-
-
-
-
-
 class _AnimalPageState extends State<AnimalPage> {
   // 1. Cria o espião da rolagem
   final ScrollController _scrollController = ScrollController();

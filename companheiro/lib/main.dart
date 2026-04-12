@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 
 
-import 'view/login/tela_login.dart';
+import 'view/auth/tela_login.dart';
 import 'controller/controle_tema.dart';
 import 'view/theme/tema.dart';
 
@@ -49,14 +49,14 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color(0xFf84A9AC),
           primary: Color(0xFf84A9AC),
-          secondary: Color(0xFF4CAF7D),
-          surface: Color(0xFFFDF6EE),
+          secondary: Color(0xFF3B6978),
+          surface: Color(0xFF204051), // Cor navegation bar
         ),
        
         useMaterial3: true,
         fontFamily: 'Roboto',
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFf84A9AC),
+          backgroundColor: Color(0xFf3B6978),
           foregroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
