@@ -1,6 +1,25 @@
 import 'package:flutter/foundation.dart';
 import '../models/models.dart';
 
+
+
+
+
+
+
+class AuthController extends ChangeNotifier{
+
+}
+
+
+
+
+
+
+
+
+
+
 class AuthProvider extends ChangeNotifier {
   Usuario? _usuarioLogado;
   final List<Usuario> _usuarios = [];

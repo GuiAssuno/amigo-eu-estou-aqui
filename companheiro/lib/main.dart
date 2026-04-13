@@ -4,10 +4,13 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/gestures.dart';
 
+import '/controller/auth_controle.dart';
+import '/controller/animal_controle.dart';
+import '/controller/voluntario_controle.dart';
+import '/controller/tema_controle.dart';
 
-import 'view/auth/tela_login.dart';
-import 'controller/controle_tema.dart';
-import 'view/theme/tema.dart';
+import '/view/auth/tela_login.dart';
+import '/view/theme/tema.dart';
 
 
 final getIt = GetIt.instance;
@@ -17,20 +20,35 @@ void main() {
 
   runApp(
     DevicePreview(
-      builder: (context) => ChangeNotifierProvider(
-        create: (context) => ThemeController(),
+      builder: (context) => MultiProvider(
+        providers: [
+          // O especialista em Login e Senhas
+          ChangeNotifierProvider(create: (_) => AuthController()), 
+      
+          // Cachorros e Gatos
+          ChangeNotifierProvider(create: (_) => AnimalController()), 
+        
+          // O especialista em Vagas de ONGs
+          ChangeNotifierProvider(create: (_) => VoluntarioController()), 
+      
+          // O especialista em Modo Escuro/Claro
+          ChangeNotifierProvider(create: (_) => ThemeController()),
+        ],
         child: const MainApp(),
       ),
     ),
   );
 }
 
+
+
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final temaController = Provider.of<ThemeController>(context);
 
 
     return MaterialApp(

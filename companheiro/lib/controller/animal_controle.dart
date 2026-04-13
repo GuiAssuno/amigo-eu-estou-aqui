@@ -1,62 +1,97 @@
+import 'package:flutter/material.dart';
+
+import '/model/modelos.dart';
+
 class AnimalController extends ChangeNotifier {
-  // A lista oficial que aparece na tela
-  List<Animal> _listaDeAnimais = [];
-  List<Animal> get listaDeAnimais => _listaDeAnimais;
+  
+  final List<Animal> listaDeAnimais = [
+    Animal(
+      id: '1',
+      nome: 'Lola',
+      raca: 'Pastor-Alemão/Rottweiler',
+      descricao: 'Dócil, brincalhona e adora comer.',
+      especie: 'Cão', 
+      idade: '3 anos', 
+      sexo: 'Fêmea', 
+      cidade: 'Ribeirão Preto = SP',
+      fotos: [
+        'assets/mock/lola/lola.png',
+        'assets/mock/lola/lola2.png',
+        'assets/mock/lola/lola3.png', 
+      ], 
+    ),
+    Animal(
+      id: '2',
+      nome: 'Linguinha',
+      raca: 'Dachshund',
+      descricao: 'Gosta de ficar perto de pessoas, otima companheira',
+      especie: 'Cão', 
+      idade: '8 anos', 
+      sexo: 'Fêmia', 
+      cidade: 'Ribeirão Preto - SP',
+      fotos: [
+        'assets/mock/linguinha/linguinha.png',
+        'assets/mock/linguinha/linguinha2.png',
+        'assets/mock/linguinha/linguinha3.png', 
+      ], 
+    ),
+    Animal(
+      id: '3',
+      nome: 'Nino',
+      especie: 'Gato',
+      raca: 'Bombaim',
+      idade: '4 meses',
+      sexo: 'Macho',
+      descricao: 'Nino é um gatinho dócil e curioso. Gosta de colo e ronrona muito. Vermifugado e vacinado.',
+      cidade: 'Sertãozinho - SP',
+      fotos: [
+        'assets/mock/nino/nino.png',
+      ], 
+    ),
 
-  // Lógica de carregar (Simulando um banco de dados)
-  void carregarLoteInicial() {
-    // Aqui você decide: Carrega os primeiros 3 animais ao abrir o app
-    _listaDeAnimais.addAll(_buscarDoBanco(quantidade: 3));
-    notifyListeners();
-  }
+    Animal(
+      id: '4',
+      nome: 'Luna',
+      especie: 'Gato',
+      raca: 'Persa mix',
+      idade: '7 anos',
+      sexo: 'Fêmea',
+      descricao: 'Luna é fofa e brincalhão. Adora brincar com bolinhas e é muito afetiva. vacina em dia.',
+      cidade: 'Ribeirão Preto - SP',
+      fotos: [
+        'assets/mock/luna/luna.png',
+        'assets/mock/luna/luna2.png',
+      ], 
+    ),
+    Animal(
+      id: '5',
+      nome: 'Carolina',
+      especie: 'Cão',
+      raca: 'Beagle Bicolor',
+      idade: '10 anos',
+      sexo: 'Fêmea',
+      descricao: 'Carolina foi resgatado de maus-tratos. Após muito amor e cuidado, se tornou um cão dócil e companheira. Castrada e vacinada.',
+      cidade: 'Ribeirão Preto - SP',
+      fotos: [
+        'assets/mock/carolina/carolina.png',
+        'assets/mock/carolina/carolina2.png',
+      ], 
+    ),
+    Animal(
+      id: '6',
+      nome: 'Mimi',
+      especie: 'Gato',
+      raca: 'Angorá mix',
+      idade: '5 anos',
+      sexo: 'Fêmea',
+      descricao: 'Mimi é independente mas muito carinhosa quando quer. Ótima companhia para quem passa o dia em casa.',
+      cidade: 'Franca - SP',
+      fotos: [
+        'assets/mock/mimi/mimi.png',
+        'assets/mock/mimi/mimi2.png',
+        'assets/mock/mimi/mimi3.png', 
+      ], 
+    ),
+  ];
 
-  void carregarMaisAnimais() {
-    // Aqui você decide: Quando o usuário rolar, carrega mais 3
-    _listaDeAnimais.addAll(_buscarDoBanco(quantidade: 3));
-    notifyListeners();
-  }
-}
-
-
-
-
-
-class _AnimalPageState extends State<AnimalPage> {
-  // 1. Cria o espião da rolagem
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    
-    // 2. Avisa o espião para ficar prestando atenção
-    _scrollController.addListener(() {
-      
-      // A MÁGICA DO GATILHO ACONTECE AQUI:
-      // Se a posição atual da rolagem chegar ao MÁXIMO da tela...
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        
-        // ...Chama o Provider para carregar o próximo lote!
-        Provider.of<AnimalController>(context, listen: false).carregarMaisAnimais();
-        
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose(); // Limpa a memória quando sair da tela
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController, // 3. Conecta o espião na sua lista!
-      itemCount: provider.listaDeAnimais.length,
-      itemBuilder: (context, index) {
-        // ... aqui vai aquele seu código lindo do Post com o PageView
-      }
-    );
-  }
 }

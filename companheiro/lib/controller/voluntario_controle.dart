@@ -1,5 +1,25 @@
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import '../models/models.dart';
+
+
+
+
+
+
+
+class VoluntarioController extends ChangeNotifier {
+  
+}
+
+
+
+
+
+
+
+
+
 
 class VoluntariadoProvider extends ChangeNotifier {
   final List<Vaga> _vagas = [

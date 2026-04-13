@@ -22,10 +22,8 @@ class Animal {
   final String idade;
   final String sexo;
   final String descricao;
-  final String ong;
   final String cidade;
-  final String imageUrl;
-  bool favorito;
+  final List<String> fotos;
 
   Animal({
     required this.id,
@@ -35,10 +33,8 @@ class Animal {
     required this.idade,
     required this.sexo,
     required this.descricao,
-    required this.ong,
     required this.cidade,
-    required this.imageUrl,
-    this.favorito = false,
+    required this.fotos,
   });
 }
 
