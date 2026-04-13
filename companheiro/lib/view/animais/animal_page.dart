@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '/view/animais/detalhe_animal.dart'; 
 import '/controller/animal_controle.dart';

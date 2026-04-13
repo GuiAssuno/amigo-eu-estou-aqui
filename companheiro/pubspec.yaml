@@ -27,8 +27,13 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-
-assets: 
-  - assets/images/  
-  - assets/icon/
-  - assets/mock/
+  assets: 
+    - assets/images/  
+    - assets/icon/
+    - assets/mock/
+    - assets/mock/lola/
+    - assets/mock/linguinha/
+    - assets/mock/nino/
+    - assets/mock/luna/
+    - assets/mock/carolina/
+    - assets/mock/mimi/
