@@ -6,109 +6,501 @@ class TelaSobre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFDF6EE),
-      appBar: AppBar(
-        title: const Text('Sobre'),
-        backgroundColor: const Color(0xFF204051),
-        foregroundColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
 
-            // Logo
-            Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: const Color(0xFF204051),
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF204051),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          
+          SliverAppBar(
+            expandedHeight: 260,
+            pinned: true,
+            backgroundColor:  const Color(0xFFFAEEDA) ,
+            foregroundColor: const Color(0xFF2C2C2A),
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 255, 255, 255), // A cor de fundo continua aqui
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/logo.png'), // Puxa a foto
+                        fit: BoxFit.cover, 
+                      ),
+                    ),
+                    child: const Center(
+                     
+                       
+                    ),
                   ),
+                  // Positioned(
+                  //   top: 16,
+                  //   right: 16,
+                  //   child: SafeArea(
+                  //     child: GestureDetector(
+                        
+                  //       child: Container(
+                  //         padding: const EdgeInsets.all(10),
+                  //         decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                  //         child: Icon(Icons.favorite_border,
+                  //           color:  Colors.red,
+                  //           size: 22,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
-              child: const Icon(Icons.volunteer_activism, color: Colors.white, size: 50),
             ),
-            const SizedBox(height: 16),
-            const Text(
-              'Hub Solidário',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A)),
-            ),
-            const Text(
-              'Versão 1.0.0',
-              style: TextStyle(color: Color(0xFF888780), fontSize: 13),
-            ),
-            const SizedBox(height: 28),
+          ),
+      
 
-            // Objetivo
-            _SecaoCard(
-              icone: Icons.info_outline,
-              titulo: 'Objetivo do aplicativo',
-              conteudo:
-                  'O Hub Solidário conecta pessoas que desejam adotar animais ou realizar voluntariado com ONGs e projetos sociais. '
-                  'De um lado, famílias encontram bichinhos que precisam de um lar. '
-                  'Do outro, voluntários encontram oportunidades de impacto social de acordo com seu perfil e disponibilidade.',
-            ),
-            const SizedBox(height: 16),
+      SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'animal.nome',
+                              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A)),
+                            ),
+                            Text(
+                              'animal.raca',
+                              style: const TextStyle(fontSize: 16, color: Color(0xFF888780)),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF4CAF7D),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          'animal.especie',
+                          style: const TextStyle(color: Color(0xFF4CAF7D), fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
 
-            // Equipe
-            _SecaoCard(
-              icone: Icons.group_outlined,
-              titulo: 'Equipe de desenvolvimento',
-              conteudo: '',
-              filhos: const [
-                _MembroEquipe(nome: 'Nome do Integrante 1', papel: 'Desenvolvedor Flutter'),
-                _MembroEquipe(nome: 'Nome do Integrante 2', papel: 'Desenvolvedor Flutter'),
-              ],
-            ),
-            const SizedBox(height: 16),
+                  // Características
+                  Row(
+                    children: [
+                    ],
+                  ),
+                  const SizedBox(height: 20),
 
-            // Disciplina / Instituição
-            _SecaoCard(
-              icone: Icons.school_outlined,
-              titulo: 'Informações acadêmicas',
-              conteudo: '',
-              filhos: const [
-                _InfoAcademica(rotulo: 'Disciplina', valor: 'Desenvolvimento Mobile com Flutter'),
-                _InfoAcademica(rotulo: 'Instituição', valor: 'Nome da Instituição de Ensino'),
-                _InfoAcademica(rotulo: 'Professor', valor: 'Nome do Professor'),
-              ],
-            ),
-            const SizedBox(height: 16),
 
-            // Tecnologias
-            _SecaoCard(
-              icone: Icons.code_outlined,
-              titulo: 'Tecnologias utilizadas',
-              conteudo: '',
-              filhos: const [
-                _InfoAcademica(rotulo: 'Framework', valor: 'Flutter SDK'),
-                _InfoAcademica(rotulo: 'Linguagem', valor: 'Dart'),
-                _InfoAcademica(rotulo: 'Gerenciamento de estado', valor: 'Provider (ChangeNotifier)'),
-                _InfoAcademica(rotulo: 'Plataformas', valor: 'Android e iOS'),
-              ],
-            ),
 
-            const SizedBox(height: 32),
-            const Text(
-              'Feito com ❤️ para conectar corações',
-              style: TextStyle(color: Color(0xFF888780), fontSize: 13),
-              textAlign: TextAlign.center,
+
+
+
+
+
+
+
+
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.info_outline, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('Objetivo do aplicativo', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+
+
+
+                          const SizedBox(height: 10),
+                          Text( 'O Hub Solidário conecta pessoas que desejam adotar animais ou realizar voluntariado com ONGs e projetos sociais. '
+                                'De um lado, famílias encontram bichinhos que precisam de um lar. '
+                                'Do outro, voluntários encontram oportunidades de impacto social de acordo com seu perfil e disponibilidade.', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+
+
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.group_outlined, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('Equipe de desenvolvimento', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+                          const SizedBox(height: 10),
+                          Text( 'Guilherme Assunção - Desenvolvedor Flutter', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+
+
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.school_outlined, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('Informações acadêmicas', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+
+
+
+                          const SizedBox(height: 10),
+                          Text( 'Disciplina:  Desenvolvimento Mobile com Flutter'
+                                'Instituição: FATEC-RP'
+                                'Professor:   Rodrigo plotz', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+                      ],
+                    ),
+                  ),
+
+
+
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.code_outlined, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('Tecnologias utilizadas', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+
+
+
+                          const SizedBox(height: 10),
+                          Text( 'Framework'
+                                'Linguagem'
+                                'Gerenciamento de estado'
+                                'Plataformas', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+                      ],
+                    ),
+                  ),
+
+
+
+
+
+
+
+
+
+
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.heart_broken_outlined, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('Dedicatoria', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+                          const SizedBox(height: 10),
+                          Text( 'Julia Roberta da Silva'
+                                'Pessoa que admiro, Amiga que inspira, Mulher que amo'
+                                'Apesar de todos os defeitos, sempre farei o perfeito para você', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+
+
+                      ],
+                    ),
+                  ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.info_outline, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+
+
+
+                          const SizedBox(height: 10),
+                          Text( '', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+
+
+                      ],
+                    ),
+                  ),
+
+
+
+
+
+
+
+
+
+
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.info_outline, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+
+
+
+                          const SizedBox(height: 10),
+                          Text( '', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+
+
+                      ],
+                    ),
+                  ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  const SizedBox(height: 20),
+                   Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.info_outline, color: const Color(0xFFE8734A), size: 22),
+                            const SizedBox(width: 8),
+                            Text('', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
+                          ],
+                        ),
+
+
+
+                          const SizedBox(height: 10),
+                          Text( '', 
+                                style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+
+
+                      ],
+                    ),
+                  ),
+
+                 
+                  const SizedBox(height: 20),
+
+                  const Text('Sobre mim', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 8),
+                  Text(
+                    '',
+                    style: const TextStyle(fontSize: 15, color: Color(0xFF5F5E5A), height: 1.6),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // Botão adotar
+                  
+                    
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
-    );
+          ),
+    ],
+  ),
+);
   }
 }
+
+
+
+
+
+Widget listaSobre( BuildContext context){
+
+  return ListTile(
+    leading: Container(
+      padding: EdgeInsets.all(8),
+      width: 100,
+      child: Placeholder()),
+      title: Text('Place' ),
+    );
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 class _SecaoCard extends StatelessWidget {
   final IconData icone;

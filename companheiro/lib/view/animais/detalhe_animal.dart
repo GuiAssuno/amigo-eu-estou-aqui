@@ -4,16 +4,21 @@ import 'package:provider/provider.dart';
 
 
 class DetalheAnimal extends StatelessWidget {
-  const DetalheAnimal({super.key});
+  final String idAnimal;
+  DetalheAnimal({super.key, required this.idAnimal});
 
   @override
   Widget build(BuildContext context) {
  return Scaffold(
       appBar: AppBar(
-        title: Text('Voluntários'),
+        title: Text(''),
       ),
-      body: Center(
-        child: Text('detalhes animal'),
+      body: SingleChildScrollView (
+        child: SafeArea(
+            child: SliverAppBar(
+              
+            )  
+          ),
       ),
     );
   }

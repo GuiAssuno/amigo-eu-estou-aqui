@@ -19,22 +19,17 @@ class _AnimalPageState extends State<AnimalPage> { // tela que muda estado, tela
     return Scaffold(
       appBar: AppBar(
         title: Text('Adoção', ),
-        titleSpacing: 16, // aqui pode ser personalizada a distância do título do appbar, caso seja necessário
+        titleSpacing: 16,
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              // aqui pode ser personalizada a ação de atualização da lista de animais, caso seja necessário
             },
           ),
         ],
-        //actionsIconTheme: context.theme.iconTheme.copyWith(color: Colors.white), // aqui pode ser personalizada a cor dos ícones de ação, caso seja necessário
-        //actionsPadding: context.padding.all(8), // aqui pode ser personalizada a distância entre
         ),
       
       body: Center(
-        //child: Text('Lista de Animais'),
-        // aqui pode ser personalizada a exibição da lista de animais, caso seja necessário
         child: listaAnimais(controller)
       ),
     );
@@ -85,7 +80,7 @@ Widget listaAnimais(AnimalController controller) {
       return InkWell(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetalheAnimal(),)
+          MaterialPageRoute(builder: (context) => DetalheAnimal(idAnimal: animalAtual.id,),)
         ),
       
         child: Card(
