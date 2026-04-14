@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-class DetalheVagaScreen extends StatelessWidget {
+class DetalheVaga extends StatelessWidget {
   //final String vagaId;
-  const DetalheVagaScreen({super.key});
+  const DetalheVaga({super.key});
 
   @override
   Widget build(BuildContext context) {

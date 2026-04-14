@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/view/ongs/ongs_page.dart';
 import '/view/home/home_page.dart';
 import '/view/animais/animal_page.dart';
-import '/view/voluntarios/voluntario_page.dart';
+import '../voluntariado/voluntario_page.dart';
 import '/view/sos/sos_page.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 

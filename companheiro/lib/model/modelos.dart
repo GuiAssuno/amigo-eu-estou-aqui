@@ -43,7 +43,7 @@ class Vaga {
   final String titulo;
   final String ong;
   final String descricao;
-  final String area;
+  final String tipo;
   final String cidade;
   final String disponibilidade;
   final int vagasDisponiveis;
@@ -54,7 +54,7 @@ class Vaga {
     required this.titulo,
     required this.ong,
     required this.descricao,
-    required this.area,
+    required this.tipo,
     required this.cidade,
     required this.disponibilidade,
     required this.vagasDisponiveis,

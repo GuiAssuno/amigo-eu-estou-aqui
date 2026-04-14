@@ -63,16 +63,14 @@ class FotoAnimal extends StatelessWidget { // tela que não muda estado
           ),
         ],
       ),
-      // 2. Usamos o Image.asset para ler a foto que está na pasta do seu computador
+  
       child: Image.asset(
         caminhoFoto,
-        fit: BoxFit.cover, // A MÁGICA: Isso faz a foto preencher o Container sem esticar, cortando as sobras estilo Instagram!
+        fit: BoxFit.cover, 
       ),
     );
   }
 }
-
-// Imagine que você pegou o Controller usando o Provider aqui
 
 
 Widget listaAnimais(AnimalController controller) {
