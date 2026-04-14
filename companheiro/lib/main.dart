@@ -6,7 +6,7 @@ import 'package:flutter/gestures.dart';
 
 import '/controller/auth_controle.dart';
 import '/controller/animal_controle.dart';
-import '/controller/voluntario_controle.dart';
+import 'controller/voluntariado_controle.dart';
 import '/controller/tema_controle.dart';
 
 import '/view/auth/tela_login.dart';
@@ -29,7 +29,7 @@ void main() {
           ChangeNotifierProvider(create: (_) => AnimalController()), 
         
           // O especialista em Vagas de ONGs
-          ChangeNotifierProvider(create: (_) => VoluntarioController()), 
+          ChangeNotifierProvider(create: (_) => VoluntariadoController()), 
       
           // O especialista em Modo Escuro/Claro
           ChangeNotifierProvider(create: (_) => ThemeController()),

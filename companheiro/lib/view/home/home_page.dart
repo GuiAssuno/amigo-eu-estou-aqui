@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '/view/sobre/sobre.dart';
 import '../auth/tela_login.dart';
-import '/view/voluntarios/profile_page.dart';
+import '../profile/profile_page.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 
 
