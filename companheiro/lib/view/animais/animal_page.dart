@@ -37,7 +37,7 @@ class _AnimalPageState extends State<AnimalPage> { // tela que muda estado, tela
 }
 
 
-class FotoAnimal extends StatelessWidget { // tela que não muda estado
+class FotoAnimal extends StatelessWidget { 
   final String caminhoFoto;
 
   const FotoAnimal({
@@ -49,7 +49,6 @@ class FotoAnimal extends StatelessWidget { // tela que não muda estado
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        // Removemos a cor de fundo, a imagem fará esse papel agora
         boxShadow: [
           BoxShadow(
             color: Color.fromARGB(50, 1, 1, 1),
@@ -95,11 +94,11 @@ Widget listaAnimais(AnimalController controller) {
                 height: 300,
                 child: ClipRRect(
                   child: PageView.builder(
-                    itemCount: animalAtual.fotos.length, // A quantidade de fotos é a quantidade que o animal tem
+                    itemCount: animalAtual.fotos.length, // quantidade de fotos que ele tem
                     itemBuilder: (BuildContext context, int fotoIndex) {
                       return FotoAnimal(
                         caminhoFoto: animalAtual.fotos[fotoIndex],
-                      );                      
+                      );
                     },
                   ),
                 ),
@@ -110,7 +109,6 @@ Widget listaAnimais(AnimalController controller) {
               Text(animalAtual.raca, style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
               const SizedBox(height: 8),
               Text(animalAtual.descricao, style: TextStyle(fontSize: 12, color: Color(0xFF000000))),
-                    
               ],
             ),
           ),

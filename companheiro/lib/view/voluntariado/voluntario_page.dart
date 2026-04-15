@@ -29,42 +29,37 @@ class _VoluntarioPageState extends State<VoluntarioPage> {
   Widget build(BuildContext context) {
   final controller = context.watch<VoluntariadoController>();
     return Scaffold(
-      appBar: AppBar(
-        title: TextField( 
-          controller: _buscaCtrl,
-          decoration: InputDecoration(
-            hintText: 'Buscar por...',
-            prefixIcon: const Icon(Icons.search, color: Colors.black),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.black, width: 1),
-            ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-          ),
-        ) ,
-      ),
 
-
-      body: SafeArea (
-        child:  Column(
-          children: [Container(
-              //color: const Color(0xFF4CAF7D),// Header verde
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [ 
-                  const SizedBox(height: 12),
-                  listaVagas(controller),
-                ],
+      body: CustomScrollView(
+          slivers: <Widget>[ 
+            SliverAppBar(
+              floating: true, // assim que rolar pra cima
+              snap: true,     // pra aparecer
+              pinned: false,  // Some totalmente ao descer
+              backgroundColor: Color(0xFF3B6978),
+              title: TextField( 
+                controller: _buscaCtrl,
+                decoration: InputDecoration(
+                  hintText: 'Buscar por...',
+                  prefixIcon: const Icon(Icons.search, color: Colors.black),
+                  filled: true,
+                  fillColor: const Color(0xFFFDF6EE),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.black, width: 1),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                ),
               ),
+            ),
+            
+            SliverPadding(
+
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              sliver: listaVagas(controller),
             ),
           ],
         ),
-      ),
-
-
     );
   }
 }
@@ -76,18 +71,15 @@ class ContainerVaga extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xff482984),
       decoration: const BoxDecoration(
+        color: Color.fromARGB(255, 191, 151, 255),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(50, 1, 1, 1),
-            blurRadius: 8,
-            offset: Offset(0, 4),
+            color: Color.fromARGB(255, 1, 1, 1),
           ),
         ],
       ),
-      // 2. Usamos o Image.asset para ler a foto que está na pasta do seu computador
-      child: Text(tipoVaga) // A MÁGICA: Isso faz a foto preencher o Container sem esticar, cortando as sobras estilo Instagram!
+      child: Text(tipoVaga) 
   );
 }
 
@@ -95,19 +87,21 @@ class ContainerVaga extends StatelessWidget{
 }
 
 Widget listaVagas(VoluntariadoController controller) {
-  return ListView.builder(
-    itemCount: controller.vagas.length,
-    itemBuilder: (context, index){
-      final vagaAtual = controller.vagas[index];
+  return SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (context, index) {
+        final vagaAtual = controller.vagas[index];
 
-      return InkWell(
+        // DAQUI PRA BAIXO FICA TUDO EXATAMENTE IGUAL!
+        return InkWell(
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DetalheVaga(),)
         ),
       
-        child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Card.outlined(
+
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           elevation: 4,
           color: Color.fromARGB(255, 214, 214, 212),
           child: Padding (
@@ -141,7 +135,10 @@ Widget listaVagas(VoluntariadoController controller) {
           ),
         ),
       );
-    }
+      },
+      // A contagem de itens agora fica no final do delegate:
+      childCount: controller.vagas.length, 
+    ),
   );
 }
 
@@ -168,7 +165,27 @@ Widget listaVagas(VoluntariadoController controller) {
 
 
 
-
+// Scaffold(
+//   body: CustomScrollView(
+//     slivers: <Widget>[
+//       SliverAppBar(
+//         floating: true, // Ela flutua ao subir
+//         snap: true,     // Ela aparece de vez ao subir
+//         pinned: false,  // Ela some totalmente ao descer
+//         expandedHeight: 60.0,
+//         title: Text('Meu App'),
+//         backgroundColor: Colors.blue,
+//       ),
+//       // O conteúdo da sua página deve ser um Sliver
+//       SliverList(
+//         delegate: SliverChildBuilderDelegate(
+//           (context, index) => ListTile(title: Text('Item #$index')),
+//           childCount: 50,
+//         ),
+//       ),
+//     ],
+//   ),
+// );
 
 
 
