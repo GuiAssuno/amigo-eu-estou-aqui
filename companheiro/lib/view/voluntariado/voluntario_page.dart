@@ -1,4 +1,3 @@
-import 'package:companheiro/model/modelos.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,8 +53,7 @@ class _VoluntarioPageState extends State<VoluntarioPage> {
             ),
             
             SliverPadding(
-
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+              padding: const EdgeInsets.fromLTRB(0, 12, 0, 16),
               sliver: listaVagas(controller),
             ),
           ],
@@ -66,149 +64,96 @@ class _VoluntarioPageState extends State<VoluntarioPage> {
 
 class ContainerVaga extends StatelessWidget{
   final String tipoVaga;
-  const ContainerVaga ({super.key, required this.tipoVaga,});
-  
+  final String tituloVaga;
+  final String descricaoVaga;
+  final String ongVaga;
+
+  const ContainerVaga ({
+    super.key, 
+    required this.ongVaga,
+    required this.tipoVaga, 
+    required this.tituloVaga, 
+    required this.descricaoVaga, 
+  });
+
+  ({Color corContainer, Color corBorda}) get corVaga {
+    switch (tipoVaga) {
+      case 'Educação': return (corContainer: const Color.fromARGB(255, 138, 168, 198), corBorda: const Color.fromARGB(255, 18, 82, 146));
+      case 'Design e Comunicação': return (corContainer:Color.fromARGB(255, 183, 154, 164), corBorda: const Color.fromARGB(255, 143, 31, 68));
+      case 'Fotografia': return (corContainer: const Color.fromARGB(255, 166, 159, 149), corBorda: const Color.fromARGB(255, 129, 78, 7));
+      case 'Transporte': return (corContainer: const Color.fromARGB(255, 134, 149, 115), corBorda: const Color.fromARGB(255, 54, 93, 7));
+      default: return (corContainer: const Color(0xFFE7DFD5), corBorda: const Color.fromARGB(255, 159, 113, 56));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 191, 151, 255),
+      decoration: BoxDecoration(
+        
+        color: corVaga.corContainer,
+        border: Border(
+          top: BorderSide(width: 6,color: corVaga.corBorda),
+          left: BorderSide(width: 3,color: corVaga.corBorda),
+          right: BorderSide(width: 3,color: corVaga.corBorda),
+          bottom: BorderSide(width: 6, color: corVaga.corBorda),
+        ),
+        
         boxShadow: [
           BoxShadow(
             color: Color.fromARGB(255, 1, 1, 1),
           ),
         ],
       ),
-      child: Text(tipoVaga) 
-  );
+
+      child: Padding(  
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(tituloVaga, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text('$tipoVaga - $ongVaga', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,)),
+            const SizedBox(height: 4),
+            Text(descricaoVaga, style: TextStyle(fontSize: 16,)), 
+          ],
+        ),
+      ) 
+    );
+  }
 }
 
-
-}
-
+@override
 Widget listaVagas(VoluntariadoController controller) {
   return SliverList(
-    delegate: SliverChildBuilderDelegate(
-      (context, index) {
+    delegate: SliverChildBuilderDelegate( (context, index) {
         final vagaAtual = controller.vagas[index];
-
-        // DAQUI PRA BAIXO FICA TUDO EXATAMENTE IGUAL!
-        return InkWell(
-        onTap: () => Navigator.push(
+        
+        return GestureDetector(
+          onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DetalheVaga(),)
-        ),
-      
-        child: Card.outlined(
+          ),
 
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-          elevation: 4,
-          color: Color.fromARGB(255, 214, 214, 212),
-          child: Padding (
-            padding: EdgeInsets.only(left: 8, right: 8),
-            child: Column(
+          child:Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [ 
               const SizedBox(height: 8),
-              Container(
-                height: 300,
-                child: ClipRRect(
-                  child: PageView.builder(
-                    itemCount: 1, // A quantidade de fotos é a quantidade que o animal tem
-                    itemBuilder: (BuildContext context, int fotoIndex) {
-                      return ContainerVaga(
-                        tipoVaga: vagaAtual.tipo,
-                      );                      
-                    },
-                  ),
+              SizedBox(
+                width: double.infinity,
+                child: ContainerVaga(
+                    ongVaga: vagaAtual.ong,
+                    tipoVaga: vagaAtual.tipo,
+                    tituloVaga: vagaAtual.titulo,
+                    descricaoVaga: vagaAtual.descricao,
                 ),
               ),
-              const SizedBox(height: 16),
-              Text(vagaAtual.titulo, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Text(vagaAtual.tipo, style: TextStyle(fontSize: 14, color: Color(0xFF000000))),
-              const SizedBox(height: 8),
-              Text(vagaAtual.descricao, style: TextStyle(fontSize: 12, color: Color(0xFF000000))),
-                    
-              ],
-            ),
+            ],
           ),
-        ),
-      );
+        );
       },
-      // A contagem de itens agora fica no final do delegate:
       childCount: controller.vagas.length, 
     ),
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Scaffold(
-//   body: CustomScrollView(
-//     slivers: <Widget>[
-//       SliverAppBar(
-//         floating: true, // Ela flutua ao subir
-//         snap: true,     // Ela aparece de vez ao subir
-//         pinned: false,  // Ela some totalmente ao descer
-//         expandedHeight: 60.0,
-//         title: Text('Meu App'),
-//         backgroundColor: Colors.blue,
-//       ),
-//       // O conteúdo da sua página deve ser um Sliver
-//       SliverList(
-//         delegate: SliverChildBuilderDelegate(
-//           (context, index) => ListTile(title: Text('Item #$index')),
-//           childCount: 50,
-//         ),
-//       ),
-//     ],
-//   ),
-// );
-
-
-
-
-
-
-
-
-
-
-
-// class VoluntarioPage extends StatelessWidget {
-//   const VoluntarioPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Voluntários'),
-//       ),
-//       body: Center(
-//         child: Text('Lista de Voluntários'),
-//       ),
-//     );
-//   }
-// }

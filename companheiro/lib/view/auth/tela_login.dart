@@ -36,12 +36,12 @@ class _TelaLoginState extends State<TelaLogin> {
         MaterialPageRoute(builder: (_) => const Home()),
       );
     } else {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('Erro ao realizar login.'),
-      //     backgroundColor: Colors.red,
-      //   ),
-      // );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao realizar login.'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -169,8 +169,8 @@ class _TelaLoginState extends State<TelaLogin> {
 
                     validator: (email) {
                       if (email == null || email.isEmpty) return 'Informe seu e-mail.';
-                      //final regex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
-                      //if (!regex.hasMatch(email)) return 'E-mail inválido.';
+                      final regex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+                      if (!regex.hasMatch(email)) return 'E-mail inválido.';
                       return null;
                     },
                   ),
