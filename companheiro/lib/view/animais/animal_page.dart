@@ -7,6 +7,9 @@ import '/controller/animal_controle.dart';
 class AnimalPage extends StatefulWidget { // tela que muda estado, corpo da televisão
   const AnimalPage({super.key});
 
+  void _atualizarLista() { // função para atualizar a lista de animais, função para recarregar a lista de animais, função para atualizar os dados dos animais, função para recarregar os dados dos animais
+  }
+
   @override
   State<AnimalPage> createState() => _AnimalPageState(); // estado da tela, estado do corpo da televisão
 }

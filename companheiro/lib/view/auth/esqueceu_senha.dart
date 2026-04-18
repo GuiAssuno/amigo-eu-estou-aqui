@@ -18,7 +18,10 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
   Future<void> _recuperar() async {
 
   }
-
+  void _limparCampoEmail() { // função para limpar o campo de email
+    _emailCtrl.clear();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

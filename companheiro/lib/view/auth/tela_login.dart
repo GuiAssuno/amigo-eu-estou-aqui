@@ -41,7 +41,11 @@ class _TelaLoginState extends State<TelaLogin> {
     }
   }
 
-
+  void _limparCampos() { // função para limpar os campos de email e senha
+    _emailController.clear();
+    _passwordController.clear();
+  }
+  
   @override
   Widget build(BuildContext context){
     return Scaffold(

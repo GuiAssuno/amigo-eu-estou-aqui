@@ -8,6 +8,9 @@ import 'detalhe_vaga.dart';
 class VoluntarioPage extends StatefulWidget {
   const VoluntarioPage({super.key});
 
+  void _atualizarLista() { // função para atualizar a lista de vagas, função para recarregar a lista de vagas, função para atualizar os dados das vagas, função para recarregar os dados das vagas
+  }
+  
   @override
   State<VoluntarioPage> createState() => _VoluntarioPageState();
 }

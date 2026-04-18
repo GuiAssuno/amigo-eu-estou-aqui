@@ -20,6 +20,15 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
   bool _confirmOculta = true; // variável para controlar a visibilidade da confirmação de senha
   bool _carregando = false;   // variável para controlar o estado de carregamento
 
+  void _limparCampos() { // função para limpar os campos de texto
+    _cnpjCtrl.clear();
+    _nomeCtrl.clear();
+    _emailCtrl.clear();
+    _telefoneCtrl.clear();
+    _senhaCtrl.clear();
+    _confirmCtrl.clear();
+  }
+
   @override
   Future<void> _cadastrar() async {
     if (!_formKey.currentState!.validate()) return;
