@@ -12,7 +12,7 @@ class SosPage extends StatelessWidget {
         title: Text('S . O . S'),
       ),
       body: Center(
-        child: Text('Achados e perdidos'),
+        child: Text(''),
       ),
     );
   }

@@ -15,28 +15,24 @@ class TelaLogin extends StatefulWidget {
 
 
 class _TelaLoginState extends State<TelaLogin> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
-  final _senhaCtrl = TextEditingController();  
-  bool _carregando = false;
-  bool _ocultarSenha = true;
-  int _opcaoSelecionada = 0;
+  final TextEditingController _emailController = TextEditingController();    // controlador do campo do email
+  final TextEditingController _passwordController = TextEditingController(); // controlador do campo da senha
+  final _formKey = GlobalKey<FormState>();    //chave para o formulário
+  final bool _carregando = false; // varivel para indicar se o login está em processo de carregamento
+  bool _ocultarSenha = true; // variavel para ocultar a senha, 
+  int _opcaoSelecionada = 0; // para guardar a opção selecionada: 0 para pessoa, 1 para ONG
   
-  get SvgPicture => null;
-
-//final ctrl = GetIt.I.get<AuthProvider>();
-// Se quem fez o login foi uma ONG:
-//Provider.of<ThemeController>(context, listen: false).setProfileType(isNgoProfile: true);
-
-  Future<void> _entrar() async {
-    if(_formKey.currentState!.validate()){
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const Home()),
+   @override
+// =====================================================================================================================
+// ==================================================    REALIZAR LOGIN    =============================================
+// =====================================================================================================================
+  Future<void> _entrar() async { 
+    if(_formKey.currentState!.validate()){ // verifica se os campos estão preenchidos corretamente
+      Navigator.of(context).pushReplacement( 
+        MaterialPageRoute(builder: (_) => const Home()), // Se verdadeiro vai para a tela home do aplicativo
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
+    } else { // Se não
+      ScaffoldMessenger.of(context).showSnackBar( // exibe uma mensagem de erro usando um SnackBar
         SnackBar(
           content: Text('Erro ao realizar login.'),
           backgroundColor: Colors.red,

@@ -6,7 +6,7 @@ class AuthController extends ChangeNotifier{
 }
 
 
-// class AuthProvider extends ChangeNotifier {
+// class AuthController extends ChangeNotifier {
 //   Usuario? _usuarioLogado;
 //   final List<Usuario> _usuarios = [];
 //   String? _erro;

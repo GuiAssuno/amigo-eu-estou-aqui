@@ -1,11 +1,12 @@
-class Usuario {
+// Classes para registrar informações dos usuarios do aplicativo
+class Usuario {       
   final String id;
   final String nome;
   final String email;
   final String telefone;
   final String senha;
 
-  Usuario({
+  Usuario({ 
     required this.id,
     required this.nome,
     required this.email,
@@ -14,7 +15,25 @@ class Usuario {
   });
 }
 
-class Animal {
+// Classes para registrar informações das ONGs do aplicativo
+class Ong {       
+  final String id;
+  final String nome;
+  final String email;
+  final String telefone;
+  final String senha;
+
+  Ong({ 
+    required this.id,
+    required this.nome,
+    required this.email,
+    required this.telefone,
+    required this.senha,
+  });
+}
+
+// Classe para registrar informações dos animais
+class Animal { 
   final String id;
   final String nome;
   final String especie;
@@ -25,7 +44,7 @@ class Animal {
   final String cidade;
   final List<String> fotos;
 
-  Animal({
+  Animal({ 
     required this.id,
     required this.nome,
     required this.especie,
@@ -38,7 +57,8 @@ class Animal {
   });
 }
 
-class Vaga {
+// Classe para registrar informações das vagas de voluntariado
+class Vaga { 
   final String id;
   final String titulo;
   final String ong;
@@ -49,7 +69,7 @@ class Vaga {
   final int vagasDisponiveis;
   bool inscrito;
 
-  Vaga({
+  Vaga({ 
     required this.id,
     required this.titulo,
     required this.ong,

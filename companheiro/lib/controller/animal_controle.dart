@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '/model/modelos.dart';
 
-class AnimalController extends ChangeNotifier {
+class AnimalController extends ChangeNotifier { 
   
   final List<Animal> listaDeAnimais = [
     Animal(

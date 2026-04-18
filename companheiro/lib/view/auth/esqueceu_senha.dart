@@ -14,11 +14,6 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
   bool _carregando = false;
   bool _enviado = false;
 
-  @override
-  void dispose() {
-    _emailCtrl.dispose();
-    super.dispose();
-  }
 
   Future<void> _recuperar() async {
 

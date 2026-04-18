@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-void _confirmarLogout() {
+void _confirmarLogout() { // função para confirmar o logout
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -29,7 +29,7 @@ void _confirmarLogout() {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancelar'),
           ),
-          ElevatedButton(
+          ElevatedButton( 
             onPressed: () {
               //context.read<AuthProvider>().logout();
               Navigator.of(context).pushAndRemoveUntil(
@@ -79,7 +79,7 @@ void _confirmarLogout() {
                 height: 16,
                 enabled: false,
                 child: Text(
-                  'Olá', //${usuario?.nome.split(' ').first ?? 
+                  'Olá', 
                   style: const TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),

@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import '/model/modelos.dart';
 
-class VoluntariadoController extends ChangeNotifier {
+// controlador de voluntariado, gerenciador de vagas de voluntariado, controlador de oportunidades de voluntariado, gerenciador de oportunidades de voluntariado, controlador de vagas para voluntários, gerenciador de vagas para voluntários
+class VoluntariadoController extends ChangeNotifier { 
 
+// Lista de vagas de voluntariado
   final List<Vaga> vagas = [
     Vaga(
       id: '1',
@@ -14,6 +16,7 @@ class VoluntariadoController extends ChangeNotifier {
       disponibilidade: 'Fins de semana',
       vagasDisponiveis: 5,
     ),
+
     Vaga(
       id: '2',
       titulo: 'Designer Gráfico Voluntário',
@@ -24,6 +27,7 @@ class VoluntariadoController extends ChangeNotifier {
       disponibilidade: 'Flexível',
       vagasDisponiveis: 2,
     ),
+
     Vaga(
       id: '3',
       titulo: 'Motorista para Resgates',
@@ -34,6 +38,7 @@ class VoluntariadoController extends ChangeNotifier {
       disponibilidade: 'Plantão (escala)',
       vagasDisponiveis: 3,
     ),
+
     Vaga(
       id: '4',
       titulo: 'Professor de Reforço Escolar',
@@ -44,6 +49,7 @@ class VoluntariadoController extends ChangeNotifier {
       disponibilidade: 'Seg, Qua e Sex (tarde)',
       vagasDisponiveis: 4,
     ),
+
     Vaga(
       id: '5',
       titulo: 'Fotógrafo para Adoções',
@@ -54,6 +60,7 @@ class VoluntariadoController extends ChangeNotifier {
       disponibilidade: 'Quinzenal (sábados)',
       vagasDisponiveis: 1,
     ),
+    
     Vaga(
       id: '6',
       titulo: 'Assistente Administrativo',

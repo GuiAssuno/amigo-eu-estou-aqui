@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TelaCadastrar extends StatefulWidget {
-  final int tipoUser;
+  final int tipoUser; // 0 para voluntário, 1 para ONG
   const TelaCadastrar({super.key, required this.tipoUser });
 
   @override
@@ -9,28 +9,18 @@ class TelaCadastrar extends StatefulWidget {
 }
 
 class _TelaCadastrarState extends State<TelaCadastrar> {
-  final _formKey = GlobalKey<FormState>();
-  final _cnpjCtrl = TextEditingController();
-  final _nomeCtrl = TextEditingController();
-  final _emailCtrl = TextEditingController();
-  final _telefoneCtrl = TextEditingController();
-  final _senhaCtrl = TextEditingController();
-  final _confirmCtrl = TextEditingController();
-  bool _senhaOculta = true;
-  bool _confirmOculta = true;
-  bool _carregando = false;
-
+  final _formKey = GlobalKey<FormState>();       // chave global para o formulário
+  final _cnpjCtrl = TextEditingController();     // controlador do campo CNPJ
+  final _nomeCtrl = TextEditingController();     // controlador do campo nome
+  final _emailCtrl = TextEditingController();    // controlador do campo e-mail
+  final _telefoneCtrl = TextEditingController(); // controlador do campo telefone
+  final _senhaCtrl = TextEditingController();    // controlador do campo senha
+  final _confirmCtrl = TextEditingController();  // controlador do campo confirmação de senha
+  bool _senhaOculta = true;   // variável para controlar a visibilidade da senha
+  bool _confirmOculta = true; // variável para controlar a visibilidade da confirmação de senha
+  bool _carregando = false;   // variável para controlar o estado de carregamento
 
   @override
-  void dispose() {
-    _nomeCtrl.dispose();
-    _emailCtrl.dispose();
-    _telefoneCtrl.dispose();
-    _senhaCtrl.dispose();
-    _confirmCtrl.dispose();
-    super.dispose();
-  }
-
   Future<void> _cadastrar() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _carregando = true);
