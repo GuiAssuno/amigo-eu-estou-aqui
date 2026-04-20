@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '/controller/auth_controle.dart';
 
 class TelaCadastrar extends StatefulWidget {
   final int tipoUser; // 0 para voluntário, 1 para ONG
@@ -9,33 +12,60 @@ class TelaCadastrar extends StatefulWidget {
 }
 
 class _TelaCadastrarState extends State<TelaCadastrar> {
-  final _formKey = GlobalKey<FormState>();       // chave global para o formulário
-  final _cnpjCtrl = TextEditingController();     // controlador do campo CNPJ
-  final _nomeCtrl = TextEditingController();     // controlador do campo nome
-  final _emailCtrl = TextEditingController();    // controlador do campo e-mail
-  final _telefoneCtrl = TextEditingController(); // controlador do campo telefone
-  final _senhaCtrl = TextEditingController();    // controlador do campo senha
-  final _confirmCtrl = TextEditingController();  // controlador do campo confirmação de senha
-  bool _senhaOculta = true;   // variável para controlar a visibilidade da senha
-  bool _confirmOculta = true; // variável para controlar a visibilidade da confirmação de senha
-  bool _carregando = false;   // variável para controlar o estado de carregamento
-
-  void _limparCampos() { // função para limpar os campos de texto
-    _cnpjCtrl.clear();
-    _nomeCtrl.clear();
-    _emailCtrl.clear();
-    _telefoneCtrl.clear();
-    _senhaCtrl.clear();
-    _confirmCtrl.clear();
-  }
+  final formKey = GlobalKey<FormState>();       // chave global para o formulário
+  final cnpjController = TextEditingController();     // controlador do campo CNPJ
+  final nomeController = TextEditingController();     // controlador do campo nome
+  final emailController = TextEditingController();    // controlador do campo e-mail
+  final telefoneController = TextEditingController(); // controlador do campo telefone
+  final senhaController = TextEditingController();    // controlador do campo senha
+  final confirmController = TextEditingController();  // controlador do campo confirmação de senha
+  bool senhaOculta = true;   // variável para controlar o olhinho da senha
+  bool confirmOculta = true; // variável para controlar o olhinho da confirmação de senha
+  bool carregando = false;   // variável para controlar o estado de carregamento
 
   @override
-  Future<void> _cadastrar() async {
-    if (!_formKey.currentState!.validate()) return;
-    setState(() => _carregando = true);
-    setState(() => _carregando = false);
-    if (!mounted) return;
+  void dispose() { // limpa os campos de texto quando a tela for descartada
+    emailController.dispose(); 
+    senhaController.dispose();
+    confirmController.dispose();
+    cnpjController.dispose();
+    nomeController.dispose();
+    telefoneController.dispose();
+    super.dispose();
   }
+
+  Future<void> cadastrar() async {
+    if (!formKey.currentState!.validate()) return; // validação do formulário
+    
+    setState(() => carregando = true); // inicia o estado de carregamento
+    
+    // Chama o Controller e passa os parametros de texto
+    final controller = Provider.of<AuthController>(context, listen: false);
+    bool sucesso = false;
+    sucesso = await controller.cadastrar(
+      cnpj: widget.tipoUser == 1 ? cnpjController.text : null, // cnpj se for ONG
+      nome: nomeController.text,                // nome do usuário
+      email: emailController.text,              // e-mail do usuário
+      telefone: telefoneController.text,        // telefone do usuário
+      senha: senhaController.text,              // senha do usuário
+      confirmacaoSenha: confirmController.text, // confirmação de senha do usuário
+    );
+
+    setState(() => carregando = false); // finaliza o estado de carregamento
+    if (!mounted) return; // verifica se o widget ainda está montado
+
+    // Exibe um diálogo de sucesso (substituir pela lógica real de navegação ou feedback)
+   if (sucesso) {
+      // Se deu certo, vai pra Home ou volta pro Login
+      Navigator.pop(context);
+    } else {
+      // Mostra o erro na tela (ex: "Email já cadastrado")
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(controller.erro ?? 'Erro no cadastro')),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +85,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Form(
-                key: _formKey,
+                key: formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -79,7 +109,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         Visibility(
                           visible: widget.tipoUser == 1,
                           child: TextFormField(               
-                            controller: _cnpjCtrl,
+                            controller: cnpjController,
                             style: TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               labelText: 'CNPJ',
@@ -91,7 +121,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         const SizedBox(height: 14),
 // ______________________________________________NOME______________________________________________        
                         TextFormField(
-                          controller: _nomeCtrl,
+                          controller: nomeController,
                           textCapitalization: TextCapitalization.words,
                           decoration: const InputDecoration(
                             labelText: 'Nome completo *',
@@ -103,7 +133,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         const SizedBox(height: 14),
 // ____________________________________________E-MAIL______________________________________________
                         TextFormField(
-                          controller: _emailCtrl,
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
                             labelText: 'E-mail *',
@@ -120,7 +150,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         const SizedBox(height: 14),
 // ___________________________________________TELEFONE_____________________________________________
                         TextFormField(
-                          controller: _telefoneCtrl,
+                          controller: telefoneController,
                           keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
                             labelText: 'Telefone *',
@@ -133,15 +163,15 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         const SizedBox(height: 14),
 // _____________________________________________SENHA______________________________________________
                         TextFormField(
-                          controller: _senhaCtrl,
-                          obscureText: _senhaOculta,
+                          controller: senhaController,
+                          obscureText: senhaOculta,
                           decoration: InputDecoration(
                             labelText: 'Senha *',
                             prefixIcon: const Icon(Icons.lock_outline),
                             border: OutlineInputBorder(),
                             suffixIcon: IconButton(
-                              icon: Icon(_senhaOculta ? Icons.visibility_off : Icons.visibility),
-                              onPressed: () => setState(() => _senhaOculta = !_senhaOculta),
+                              icon: Icon(senhaOculta ? Icons.visibility_off : Icons.visibility),
+                              onPressed: () => setState(() => senhaOculta = !senhaOculta),
                             ),
                           ),
                           validator: (v) {
@@ -153,20 +183,20 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         const SizedBox(height: 14),
 // _________________________________________CONFIRMAR SENHA________________________________________
                         TextFormField(
-                          controller: _confirmCtrl,
-                          obscureText: _confirmOculta,
+                          controller: confirmController,
+                          obscureText: confirmOculta,
                           decoration: InputDecoration(
                             labelText: 'Confirmar senha *',
                             prefixIcon: const Icon(Icons.lock_outline),
                             border: OutlineInputBorder(),
                             suffixIcon: IconButton(
-                              icon: Icon(_confirmOculta ? Icons.visibility_off : Icons.visibility),
-                              onPressed: () => setState(() => _confirmOculta = !_confirmOculta),
+                              icon: Icon(confirmOculta ? Icons.visibility_off : Icons.visibility),
+                              onPressed: () => setState(() => confirmOculta = !confirmOculta),
                             ),
                           ),
                           validator: (v) {
                             if (v == null || v.isEmpty) return 'Confirme sua senha.';
-                            if (v != _senhaCtrl.text) return 'As senhas não coincidem.';
+                            if (v != senhaController.text) return 'As senhas não coincidem.';
                             return null;
                           },
                         ),
@@ -194,8 +224,8 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ButtonStyle( backgroundColor: WidgetStatePropertyAll<Color>(Color.fromARGB(255, 110, 168, 173)), ), 
-                    onPressed: _carregando ? null : _cadastrar,
-                    child: _carregando
+                    onPressed: carregando ? null : cadastrar,
+                    child: carregando
                         ? const SizedBox(
                             height: 20,
                             width: 20,

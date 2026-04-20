@@ -15,10 +15,27 @@ class DetalheAnimal extends StatelessWidget {
       ),
       body: SingleChildScrollView (
         child: SafeArea(
-            child: SliverAppBar(
-              
-            )  
+          child: Column(
+            children: [
+              Container(
+                height: 200,
+                color: Colors.grey,
+                child: Center(child: Text('Foto do animal')),
+              ),
+              SizedBox(height: 16),
+              Text('Nome do animal', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
+              Text('Descrição do animal. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Ação para adotar o animal
+                },
+                child: Text('Adotar'),
+              ),
+            ],
           ),
+        ),
       ),
     );
   }

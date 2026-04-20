@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/controller/auth_controle.dart';
+
 class TelaEsqueceuSenha extends StatefulWidget {
   const TelaEsqueceuSenha({super.key});
 
@@ -9,17 +11,38 @@ class TelaEsqueceuSenha extends StatefulWidget {
 }
 
 class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
-  bool _carregando = false;
-  bool _enviado = false;
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  bool carregando = false;
+  bool enviado = false;
 
 
-  Future<void> _recuperar() async {
+Future<void> recuperar() async {
+    if (!formKey.currentState!.validate()) return;
 
+    setState(() => carregando = true);
+
+    final controller = Provider.of<AuthController>(context, listen: false);
+    bool sucesso = false;
+    
+    sucesso = await controller.esqueceuSenha(emailController.text);
+
+    setState(() => carregando = false);
+
+    if (sucesso) {
+      // Muda a tela para aquele seu Widget de sucesso
+      setState(() => enviado = true); 
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(controller.erro ?? 'Erro ao recuperar senha')),
+      );
+    }
   }
-  void _limparCampoEmail() { // função para limpar o campo de email
-    _emailCtrl.clear();
+
+  @override
+  void dispose() {// função para limpar o campo de email
+    super.dispose(); 
+    emailController.dispose();
   }
   
   @override
@@ -34,15 +57,15 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(28),
-          child: _enviado ? _buildSucesso() : _buildFormulario(),
+          child: enviado ? buildSucesso() : buildFormulario(),
         ),
       ),
     );
   }
 
-  Widget _buildFormulario() {
+  Widget buildFormulario() {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
         children: [
           const Icon(Icons.lock_reset, size: 70, color: Color(0xFF84A9AC)),
@@ -58,8 +81,9 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
             style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 14),
           ),
           const SizedBox(height: 32),
+          
           TextFormField(
-            controller: _emailCtrl,
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               labelText: 'E-mail cadastrado',
@@ -78,8 +102,8 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
             width: double.infinity,
             child: ElevatedButton(
               style: ButtonStyle( backgroundColor: WidgetStatePropertyAll<Color>(Color.fromARGB(255, 110, 168, 173)), ), 
-              onPressed: _carregando ? null : _recuperar,
-              child: _carregando
+              onPressed: carregando ? null : recuperar,
+              child: carregando
                   ? const SizedBox(
                       height: 20,
                       width: 20,
@@ -109,19 +133,20 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
     );
   }
 
-  Widget _buildSucesso() {
+  Widget buildSucesso() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Icon(Icons.mark_email_read_outlined, size: 80, color: Color(0xFF4CAF7D)),
         const SizedBox(height: 24),
+        
         const Text(
           'E-mail enviado!',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A)),
         ),
         const SizedBox(height: 12),
         Text(
-          'Enviamos instruções de redefinição de senha para:\n${_emailCtrl.text.trim()}',
+          'Enviamos instruções de redefinição de senha para:\n${emailController.text.trim()}',
           textAlign: TextAlign.center,
           style: const TextStyle(color: Color(0xFF888780), fontSize: 14),
         ),

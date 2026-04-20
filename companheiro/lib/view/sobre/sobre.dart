@@ -3,23 +3,21 @@ import 'package:flutter/material.dart';
 class TelaSobre extends StatelessWidget {
   const TelaSobre({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-// scroll view personalizado, rolagem personalizada, visualização de rolagem personalizada, área de rolagem personalizada, widget de rolagem personalizada// slivers são os filhos do CustomScrollView, elementos de rolagem, componentes de rolagem, itens de rolagem, widgets de rolagem
       body: CustomScrollView( slivers: <Widget>[ 
 //===========================================================================================================
 //================================================          APPBAR            ===============================
 //===========================================================================================================
         SliverAppBar( // barra de aplicativo deslizante
-          expandedHeight: 260, // altura expandida, altura do app bar expandida, altura do cabeçalho expandida, altura da barra de aplicativo expandida
-          pinned: true, // fixar o app bar, manter o app bar visível, manter o cabeçalho visível, manter a barra de aplicativo visível, fixar o cabeçalho, fixar a barra de aplicativo
+          expandedHeight: 260, // altura expandida
+          pinned: true, // manter o app bar visível
           backgroundColor:  const Color.fromARGB(255, 250, 237, 216) ,
           foregroundColor: const Color(0xFF2C2C2A),
           flexibleSpace: FlexibleSpaceBar(
             background: Stack(
-              fit: StackFit.expand, // expandir para preencher, expandir para ocupar, expandir para preencher espaço, expandir para ocupar espaço, expandir para preencher o espaço disponível
+              fit: StackFit.expand, // expandir para preencher o espaço disponível
               children: [
 //___________________________________________________________LOGO____________________________________________
                 Container(
@@ -46,14 +44,13 @@ class TelaSobre extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
 //##################################################          LINHA           ###############################
                 Row( crossAxisAlignment: CrossAxisAlignment.start,  
                   children: [
                     Column( crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      
-                      Text( 'BLABLA ',        // titulo
+//___________________________________________________________título__________________________________________
+                      Text( 'BLABLA ',        
                         style: 
                         const TextStyle(
                           fontSize: 28, 
@@ -61,8 +58,8 @@ class TelaSobre extends StatelessWidget {
                           color: Color(0xFF2C2C2A)
                         ),
                       ),
-                                                                
-                      Text( 'PIPIPIPI',       // subtitulo
+//_________________________________________________________subtitulo_________________________________________
+                      Text( 'PIPIPIPI',       
                         style: 
                           const TextStyle(
                             fontSize: 16, 
@@ -163,9 +160,7 @@ class TelaSobre extends StatelessWidget {
     );
   }
 }
-
-
-// Classe para criar caixas de informações padronizadas
+//___________________________________________Classe para caixas de informações padronizadas_____________________
 class Caixinha extends StatelessWidget {
   final IconData icone;      // Recebe icone
   final String titulo;      // Recebe titulo
@@ -179,7 +174,7 @@ class Caixinha extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(                             // Configurações visuais da caixa
+    return Container(                     // Configurações visuais da caixa
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -193,21 +188,20 @@ class Caixinha extends StatelessWidget {
           ),
         ],
       ),
-
       child: Column(  
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(  // Linha do ícone e título                            
+//_________________________________________________Linha do ícone e título___________________________________
+          Row(                            
             children: [
               Icon(icone, color: const Color(0xFFE8734A), size: 22),
               const SizedBox(width: 8),
               Text(titulo, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2C2C2A))),
             ],
           ),
-            const SizedBox(height: 10),
-
-            // Texto do conteúdo
-            Text(conteudo, style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
+          const SizedBox(height: 10),
+//_____________________________________________________Texto do conteúdo_____________________________________
+          Text(conteudo, style: const TextStyle(fontSize: 14, color: Color(0xFF5F5E5A), height: 1.6)),
         ],
       ),
     );

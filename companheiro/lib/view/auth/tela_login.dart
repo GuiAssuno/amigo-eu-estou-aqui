@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
-import 'package:companheiro/model/autenticador.dart';
+
 import 'esqueceu_senha.dart';
 import 'cadastro.dart';
-import '../home/home.dart';
+import '/view/home/home.dart';
+import '/controller/auth_controle.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -13,51 +14,63 @@ class TelaLogin extends StatefulWidget {
   State<TelaLogin> createState() => _TelaLoginState();
 }
 
-
 class _TelaLoginState extends State<TelaLogin> {
-  final TextEditingController _emailController = TextEditingController();    // controlador do campo do email
-  final TextEditingController _passwordController = TextEditingController(); // controlador do campo da senha
+  final emailController = TextEditingController();    // controlador do campo do email
+  final passwordController = TextEditingController(); // controlador do campo da senha
   final _formKey = GlobalKey<FormState>();    //chave para o formulário
   final bool _carregando = false; // varivel para indicar se o login está em processo de carregamento
   bool _ocultarSenha = true; // variavel para ocultar a senha, 
   int _opcaoSelecionada = 0; // para guardar a opção selecionada: 0 para pessoa, 1 para ONG
   
-   @override
+
+  @override
+  void dispose() { // função para limpar os campos de email e senha
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 // =====================================================================================================================
 // ==================================================    REALIZAR LOGIN    =============================================
 // =====================================================================================================================
-  Future<void> _entrar() async { 
-    if(_formKey.currentState!.validate()){ // verifica se os campos estão preenchidos corretamente
-      Navigator.of(context).pushReplacement( 
-        MaterialPageRoute(builder: (_) => const Home()), // Se verdadeiro vai para a tela home do aplicativo
+  Future<void> entrar() async { 
+
+    final controller = Provider.of<AuthController>(context, listen: false);
+    bool confirmacao;
+
+    confirmacao = await controller.fazarLogin( // chama a função de login do controlador de autenticação
+      emailController.text, 
+      passwordController.text);
+
+    // Como usamos "await", verificamos se a tela ainda está aberta antes de usar o 'context'
+    if (!mounted) return;
+
+    if (confirmacao) { // se o login for bem-sucedido
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const Home()), // navega para a tela principal do aplicativo
       );
-    } else { // Se não
-      ScaffoldMessenger.of(context).showSnackBar( // exibe uma mensagem de erro usando um SnackBar
-        SnackBar(
-          content: Text('Erro ao realizar login.'),
+    } else { // se não
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar( //exibe uma mensagem de erro
+          content: Text(controller.erro ?? 'Erro ao realizar login.'),
           backgroundColor: Colors.red,
         ),
       );
     }
   }
-
-  void _limparCampos() { // função para limpar os campos de email e senha
-    _emailController.clear();
-    _passwordController.clear();
-  }
   
+//==================   CONSTRUÇÃO DA TELA    ======================================================
   @override
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color(0xFFE7DFD5),
       body: Padding(
-        padding: EdgeInsets.all( 30.0),
+        padding: EdgeInsets.all(30.0),
         child: Column( // Coluna Principal
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [ 
-//=========================================================================================
-//=================================     COLUNA DO ITEM    =================================
-//=========================================================================================        
+//=================================================================================================
+//=======================================     COLUNA DO ITEM    ===================================
+//=================================================================================================        
           Column(           // Coluna do icone
             children: [  
               Container(
@@ -96,9 +109,9 @@ class _TelaLoginState extends State<TelaLogin> {
             ],
           ), 
 
-//============================================================================================
-//==============================     LINHA DA OPÇÃO DE LOGIN     =============================
-//================================      PESSOA   |   ONGs       ==============================
+//=================================================================================================
+//================================     LINHA DA OPÇÃO DE LOGIN     ================================
+//==================================      PESSOA   |   ONGs       =================================
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,7 +173,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 children: [
 // ____________________________________________E-mail_________________________________________
                   TextFormField( 
-                    controller: _emailController,
+                    controller: emailController,
                     style: TextStyle(fontSize: 14),
                     decoration: InputDecoration(
                       labelText: 'Email',
@@ -177,7 +190,7 @@ class _TelaLoginState extends State<TelaLogin> {
                   SizedBox(height: 10),
 //____________________________________________Senha _________________________________________               
                   TextFormField(                              
-                    controller: _passwordController,
+                    controller: passwordController,
                     obscureText: _ocultarSenha,
                     style: TextStyle(fontSize: 14),
 
@@ -244,7 +257,7 @@ class _TelaLoginState extends State<TelaLogin> {
         width: double.infinity,
         child: ElevatedButton(
           style: ButtonStyle( backgroundColor: WidgetStatePropertyAll<Color>(Color.fromARGB(255, 110, 168, 173)), ), 
-          onPressed: _carregando ? null : _entrar,// () => Navigator.of(context).pushReplacement( // TROCAR PARA COLOCAR VERIFICAR SENHA
+          onPressed: _carregando ? null : entrar,// () => Navigator.of(context).pushReplacement( // TROCAR PARA COLOCAR VERIFICAR SENHA
           //   MaterialPageRoute(builder: (_) => const Home()),
           // ),
 

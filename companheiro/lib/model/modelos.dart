@@ -16,19 +16,16 @@ class Usuario {
 }
 
 // Classes para registrar informações das ONGs do aplicativo
-class Ong {       
-  final String id;
-  final String nome;
-  final String email;
-  final String telefone;
-  final String senha;
+class Ong extends Usuario {       
+  final String cnpj;
 
   Ong({ 
-    required this.id,
-    required this.nome,
-    required this.email,
-    required this.telefone,
-    required this.senha,
+    required super.id,
+    required super.nome,
+    required super.email,
+    required super.telefone,
+    required super.senha,
+    required this.cnpj,
   });
 }
 

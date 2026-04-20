@@ -39,7 +39,9 @@ class _AnimalPageState extends State<AnimalPage> { // tela que muda estado, tela
   }
 }
 
-
+//=================================================================================================
+//========================================     FOTO ANIMAL    =====================================
+//=================================================================================================
 class FotoAnimal extends StatelessWidget { 
   final String caminhoFoto;
 
@@ -60,30 +62,32 @@ class FotoAnimal extends StatelessWidget {
           ),
         ],
       ),
-  
-      child: Image.asset( // imagem de recurso, imagem de ativo, imagem de asset, imagem de arquivo, imagem de caminho
+//_____________________________________________imagem do animal____________________________________
+      child: Image.asset( 
         caminhoFoto,
-        fit: BoxFit.cover, // ajuste da imagem, ajuste de caixa, ajuste de cartão, ajuste de card
+        fit: BoxFit.cover, // ajusta a imagem para caber no container 
       ),
     );
   }
 }
 
-
+//=================================================================================================
+//========================================     LISTA DE ANIMAIS    ================================
+//=================================================================================================
 Widget listaAnimais(AnimalController controller) {
   return ListView.builder(
-    itemCount: controller.listaDeAnimais.length, // quantidade de animais que ele tem
+    itemCount: controller.animais.length, // quantidade de animais que ele tem
     itemBuilder: (context, index){ // construtor de item, construtor de cartão, construtor de card, construtor de container
 
-      final animalAtual = controller.listaDeAnimais[index];
+      final animalAtual = controller.animais[index];
 
-      return GestureDetector(  // detector de gestos, detector de toque, detector de clique, detector de tap, detector de onTap
+      return GestureDetector(  // detector de gestos
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => DetalheAnimal(idAnimal: animalAtual.id,),)
         ),
       
-        child: Card( // cartão, card, container, caixa, box, box de informação, box de detalhes
+        child: Card( // cartão, card
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 4,
           color: Color.fromARGB(255, 214, 214, 212),
@@ -95,8 +99,8 @@ Widget listaAnimais(AnimalController controller) {
               const SizedBox(height: 8),
               Container(
                 height: 300,
-                child: ClipRRect( // recorte arredondado, recorte circular, recorte de borda, recorte de caixa, recorte de cartão, recorte de card
-                  child: PageView.builder( // visualização de página, visualização de cartão, visualização de card, visualização de caixa, visualização de container 
+                child: ClipRRect( // recorte arredondado
+                  child: PageView.builder( // visualização de página
                     itemCount: animalAtual.fotos.length, // quantidade de fotos que ele tem
                     itemBuilder: (BuildContext context, int fotoIndex) {
                       return FotoAnimal( // widget de foto, widget de imagem, widget de recurso, widget de ativo, widget de asset
