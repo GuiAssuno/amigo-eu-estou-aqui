@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "960080112763",
+    "project_id": "amigo-eu-estou-aqui-4d4d0",
+    "storage_bucket": "amigo-eu-estou-aqui-4d4d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960080112763:android:21934c0cd14144df6d86de",
+        "android_client_info": {
+          "package_name": "com.example.companheiro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClvZxXIE9dUDZLOWS0qjj0Q0yK6KLat3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
