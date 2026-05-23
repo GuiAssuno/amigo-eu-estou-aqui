@@ -32,3 +32,46 @@ class AuthController extends ChangeNotifier{
   }
 
 }
+
+login(context, email, senha) {
+  FirebaseAuth.instance
+      .signInWithEmailAndPassword(email: email, password: senha)
+      .then((res) {
+    sucesso(context, 'Usuário autenticado com sucesso.');
+    Navigator.pushReplacementNamed(context, 'principal');
+  }).catchError((e) {
+    switch (e.code) {
+      case 'invalid-email':
+        erro(context, 'O formato do email é inválido.');  break;
+      case 'user-not-found':
+        erro(context, 'Usuário não encontrado.'); break;
+      case 'wrong-password':
+        erro(context, 'Senha incorreta.');        break;
+      default:
+        erro(context, e.code.toString());
+    }
+  });
+}
+
+criarConta(context, nome, email, senha) {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: senha)
+        .then((res) {
+      //Armazenar informações adicionais no Firestore
+      Fireba to find project root in current working directory.seFirestore.instance.collection('usuarios').add({
+        "uid": res.user!.uid.toString(),
+        "nome": nome,
+      });
+      sucesso(context, 'Usuário criado com sucesso.');
+      Navigator.pop(context);
+    }).catchError((e) {
+      switch (e.code) {
+        case 'email-already-in-use':
+          erro(context, 'O email já foi cadastrado.'); break;
+        case 'invalid-email':
+          erro(context, 'O email é inválido.'); break;
+        default:
+          erro(context, e.code.toString());
+      }
+    });
+  }
