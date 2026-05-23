@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import '/controller/auth_controle.dart';
 import '/controller/animal_controle.dart';
 import 'controller/voluntariado_controle.dart';
@@ -14,7 +15,12 @@ import '/view/theme/tema.dart';
 
 final getIt = GetIt.instance;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   getIt.registerSingleton<String>('Hello from GetIt!');
 
   runApp(
