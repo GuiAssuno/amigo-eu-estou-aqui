@@ -1,11 +1,13 @@
+import 'package:companheiro/model/modelos.dart';
 import 'package:flutter/foundation.dart';
 import '/model/autenticador.dart';
 
 class AuthController extends ChangeNotifier{
 
-   final Autenticador autenticador = Autenticador();
-
-   String? get erro => autenticador.erro;
+  final Autenticador autenticador = Autenticador();
+  
+  Usuario? get usuarioLogado => autenticador.usuarioLogado;
+  String? get erro => autenticador.erro;
 
   Future<bool> fazarLogin(String email, String senha) async {
     return await autenticador.fazerLogin(email, senha);
