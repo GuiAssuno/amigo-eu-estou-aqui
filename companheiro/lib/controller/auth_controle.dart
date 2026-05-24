@@ -1,14 +1,28 @@
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '/model/autenticador.dart';
 
 class AuthController extends ChangeNotifier{
 
+   final FirebaseAuth _auth = FirebaseAuth.instance;
    final Autenticador autenticador = Autenticador();
 
    String? get erro => autenticador.erro;
 
   Future<bool> fazarLogin(String email, String senha) async {
-    return await autenticador.fazerLogin(email, senha);
+    try{
+      await _auth.signInWithEmailAndPassword(email: email, password: senha);
+
+    erro = null;
+    notifyListeners();
+    return true;
+    }
+
+    on FirebaseAuthException catch (e){
+      erro = e.message;
+      notifyListeners();
+      return false;
+    }
   }
 
   Future<bool> esqueceuSenha(String email) async {
@@ -30,5 +44,4 @@ class AuthController extends ChangeNotifier{
     autenticador.usuarioLogado = null; // limpar usuário logado
     notifyListeners();
   }
-
 }
