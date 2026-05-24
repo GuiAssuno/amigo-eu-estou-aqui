@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '/model/modelos.dart';
 
 // gerenciador de autenticação
 class Autenticador extends ChangeNotifier { 
-  final List<Usuario> usuarios = []; // banco de usuários simulado, todos os usuários cadastrados ficam aqui
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+   // banco de usuários simulado, todos os usuários cadastrados ficam aqui
   Usuario? usuarioLogado; // usuário logado, null se não houver nenhum usuário logado
   String? msgErro; // armazena o erro para no snackbar
 
@@ -22,16 +24,33 @@ class Autenticador extends ChangeNotifier {
 //=================================================================================================
   Future<bool> fazerLogin(String email, String senha) async { // realizar login
     msgErro = null;
+
+    try{
+      await _auth.signInWithEmailAndPassword(email: email, password: senha);
+
+      notifyListeners();
+      return true;
+    }
+
+    on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        msgErro = 'Usuário não encontrado';
+      }
+      else if (e.code == 'wrong-password') {
+        msgErro = 'E-mail ou senha incorretos';
+      }
+      else if (e.code == 'invalid-email') {
+        msgErro = 'E-mail ou senha incorretos';
+      }
+      else {
+        msgErro = 'Erro ao fazer o login';
+      }
+    }
+
     if (email.isEmpty || senha.isEmpty) { // campos vazios
       msgErro = 'Preencha todos os campos.'; // mensagem de erro para campos vazios
       notifyListeners(); // notificar ouvintes
       return false; // login falhou
-    }
-    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$'); // expressão regular para validar e-mail
-    if (!emailRegex.hasMatch(email)) {
-      msgErro = 'E-mail inválido.'; // mensagem de erro para e-mail inválido
-      notifyListeners();  // notificar ouvintes
-      return false;
     }
 
     if (email == 'gui@teste.com' && senha == '1234') { // usuário demo
@@ -45,20 +64,6 @@ class Autenticador extends ChangeNotifier {
       notifyListeners();
       return true;
     }
-
-    final buscaUsuario = usuarios.firstWhere( // encontrar usuário
-      (user) => user.email == email && user.senha == senha, // condição de busca
-      orElse: () => Usuario(id: '', nome: '', email: '', telefone: '', senha: ''), // valor padrão se não encontrado
-    );
-
-    if (buscaUsuario.id.isEmpty) { // usuário não encontrado
-      msgErro = 'E-mail ou senha incorretos.';
-      notifyListeners();
-      return false;
-    }
-    usuarioLogado = buscaUsuario;
-    notifyListeners();
-    return true;
   }
 
 //=================================================================================================

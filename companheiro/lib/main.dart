@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import '/model/animal.dart';
 import '/model/voluntariado.dart';
 import '/model/autenticador.dart';
@@ -16,7 +17,12 @@ import '/controller/voluntariado_controle.dart';
 
 final g = GetIt.instance;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   g.registerLazySingleton<ListaAnimais>(() => ListaAnimais());
   g.registerLazySingleton<ListaVoluntariado>(() => ListaVoluntariado());
   g.registerLazySingleton<Autenticador>(() => Autenticador());
