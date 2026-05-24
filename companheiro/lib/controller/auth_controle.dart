@@ -10,11 +10,13 @@ class AuthController extends ChangeNotifier{
 
    String? get erro => autenticador.erro;
 
-  Future<bool> fazarLogin(String email, String senha) async {
+   get usuarioLogado => autenticador.usuarioLogado;
+
+  Future<bool> fazerLogin(String email, String senha) async {
     try{
       await _auth.signInWithEmailAndPassword(email: email, password: senha);
 
-    erro = null;
+    autenticador.limparErro();
     notifyListeners();
     return true;
     }
