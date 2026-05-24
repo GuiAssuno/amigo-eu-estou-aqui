@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '/model/animal.dart';
 import '/model/modelos.dart';
 
 class AnimalController extends ChangeNotifier { 
-  final ListaAnimais listaAnimal = ListaAnimais();
+  final ListaAnimais listaAnimal = GetIt.I<ListaAnimais>();
 
   List<Animal> listAnimais = []; // lista que será preenchida com os dados do banco de dados
   bool bolinhaCarregando = false; // variável para exibição da bolinha de carregamento

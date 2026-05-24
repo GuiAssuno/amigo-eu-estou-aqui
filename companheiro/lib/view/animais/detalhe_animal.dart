@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-
+//import 'package:provider/provider.dart';
 
 class DetalheAnimal extends StatelessWidget {
   final String idAnimal;
-  DetalheAnimal({super.key, required this.idAnimal});
+  const DetalheAnimal({super.key, required this.idAnimal});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +23,13 @@ class DetalheAnimal extends StatelessWidget {
               SizedBox(height: 16),
               Text('Nome do animal', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               SizedBox(height: 8),
-              Text('Descrição do animal. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+              Text('Descrição do animal. '),
               SizedBox(height: 16),
+              
+              
               ElevatedButton(
                 onPressed: () {
-                  // Ação para adotar o animal
+                  
                 },
                 child: Text('Adotar'),
               ),

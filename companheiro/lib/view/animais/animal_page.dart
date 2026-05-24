@@ -7,7 +7,7 @@ import '/controller/animal_controle.dart';
 class AnimalPage extends StatefulWidget { // tela que muda estado, corpo da televisão
   const AnimalPage({super.key});
 
-  void _atualizarLista() { // função para atualizar a lista de animais, função para recarregar a lista de animais, função para atualizar os dados dos animais, função para recarregar os dados dos animais
+  void atualizarLista() { // função para atualizar a lista de animais, função para recarregar a lista de animais, função para atualizar os dados dos animais, função para recarregar os dados dos animais
   }
 
   @override
@@ -15,6 +15,18 @@ class AnimalPage extends StatefulWidget { // tela que muda estado, corpo da tele
 }
 
 class _AnimalPageState extends State<AnimalPage> { // tela que muda estado, tela da televisão 
+  @override
+    void initState() {
+      super.initState();
+      // Assim que a tela nascer, pedimos ao Controller para buscar os animais.
+      // Lemos de forma discreta usando context.read
+      final controller = context.read<AnimalController>();
+      
+      // Só carrega se a lista estiver vazia (para não gastar internet toda vez que trocar de aba)
+      if (controller.animais.isEmpty) {
+        controller.carregarAnimais();
+      }
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +39,16 @@ class _AnimalPageState extends State<AnimalPage> { // tela que muda estado, tela
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
+              controller.carregarAnimais();
             },
           ),
         ],
       ),
       
       body: Center(
-        child: listaAnimais(controller)
+        child: controller.carregando 
+          ? const CircularProgressIndicator(color: Color(0xFF3B6978)) 
+          : listaAnimais(controller), // Se não estiver carregando, mostra a lista!
       ),
     );
   }

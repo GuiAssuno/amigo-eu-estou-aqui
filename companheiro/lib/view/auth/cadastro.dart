@@ -1,3 +1,5 @@
+import 'package:companheiro/controller/tema_controle.dart';
+import 'package:companheiro/model/modelos.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,11 +54,15 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
     );
 
     setState(() => carregando = false); // finaliza o estado de carregamento
-    if (!mounted) return; // verifica se o widget ainda está montado
+    if (!mounted) return; // verifica o widget
 
-    // Exibe um diálogo de sucesso (substituir pela lógica real de navegação ou feedback)
+    // Se deu certo, vai pra Home ou volta pro Login
    if (sucesso) {
-      // Se deu certo, vai pra Home ou volta pro Login
+      final user = controller.usuarioLogado;
+      bool vOng = (user is Ong);
+      
+      context.read<TemaController>().setProfileType(OngProfile: vOng);
+
       Navigator.pop(context);
     } else {
       // Mostra o erro na tela (ex: "Email já cadastrado")

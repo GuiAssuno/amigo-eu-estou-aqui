@@ -8,7 +8,7 @@ import 'detalhe_vaga.dart';
 class VoluntarioPage extends StatefulWidget {
   const VoluntarioPage({super.key});
 
-  void _atualizarLista() { // função para atualizar a lista de vagas, função para recarregar a lista de vagas, função para atualizar os dados das vagas, função para recarregar os dados das vagas
+  void atualizarLista() { // função para atualizar a lista de vagas, função para recarregar a lista de vagas, função para atualizar os dados das vagas, função para recarregar os dados das vagas
   }
   
   @override
@@ -16,16 +16,23 @@ class VoluntarioPage extends StatefulWidget {
 }
 
 class _VoluntarioPageState extends State<VoluntarioPage> {
-  String _filtroArea = 'Todas'; // filtro de área, filtro de categoria, filtro de tipo, filtro de setor, filtro de segmento
-  final _buscaCtrl = TextEditingController(); // controlador de busca, controlador de pesquisa, controlador de filtro, controlador de texto, controlador de campo de texto
+  String filtroArea = 'Todas'; // filtro de área, filtro de categoria, filtro de tipo, filtro de setor, filtro de segmento
+  final buscaController = TextEditingController(); // controlador de busca, controlador de pesquisa, controlador de filtro, controlador de texto, controlador de campo de texto
   
-  get areas => null; // lista de áreas, lista de categorias, lista de tipos, lista de setores, lista de segmentos
-
+  //get areas => null; // lista de áreas, lista de categorias, lista de tipos, lista de setores, lista de segmentos
+  @override
+  void initState() {
+    super.initState();
+    final controller = context.read<VoluntariadoController>();
+    if (controller.vagas.isEmpty) {
+      controller.carregarVagas();
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
-  final controller = context.watch<VoluntariadoController>(); // controlador de estado
+  final controller = Provider.of<VoluntariadoController>(context); // controlador de estado
     return Scaffold(
       body: CustomScrollView(slivers: <Widget>[ // lista de slivers
 
@@ -39,7 +46,8 @@ class _VoluntarioPageState extends State<VoluntarioPage> {
           backgroundColor: Color(0xFF3B6978),
           
           title: TextField( 
-            controller: _buscaCtrl, // controlador de busca
+            controller: buscaController, // controlador de busca
+            onChanged: (texto) {context.read<VoluntariadoController>().pesquisar(texto);}, // chama a função de pesquisa do controlador
             decoration: InputDecoration(
               hintText: 'Buscar por...',
               prefixIcon: const Icon(Icons.search, color: Colors.black),
@@ -59,9 +67,15 @@ class _VoluntarioPageState extends State<VoluntarioPage> {
 //=====================================================================================================================        
 //===================================================        CORPO       =============================================        
 //=====================================================================================================================              
-        SliverPadding( 
+        controller.carregando 
+          ? const SliverFillRemaining( // SliverFillRemaining centraliza itens dentro de um CustomScrollView
+              child: Center(
+                child: CircularProgressIndicator(color: Color(0xFF3B6978)),
+              ),
+            )
+          : SliverPadding( 
               padding: const EdgeInsets.fromLTRB(0, 12, 0, 16),
-              sliver: listaVagas(controller), // lista de vagas, lista de oportunidades, lista de posições, lista de funções, lista de trabalhos
+              sliver: listaVagas(controller), 
             ),
           ],
         ),

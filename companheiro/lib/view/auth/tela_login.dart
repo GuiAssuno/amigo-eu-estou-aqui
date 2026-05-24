@@ -1,12 +1,13 @@
+import 'package:companheiro/model/modelos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-
 
 import 'esqueceu_senha.dart';
 import 'cadastro.dart';
 import '/view/home/home.dart';
 import '/controller/auth_controle.dart';
+import '/controller/tema_controle.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -35,6 +36,7 @@ class _TelaLoginState extends State<TelaLogin> {
   Future<void> entrar() async { 
 
     final controller = Provider.of<AuthController>(context, listen: false);
+    final temaController = context.read<TemaController>();
     bool confirmacao;
 
     confirmacao = await controller.fazarLogin( // chama a função de login do controlador de autenticação
@@ -45,6 +47,11 @@ class _TelaLoginState extends State<TelaLogin> {
     if (!mounted) return;
 
     if (confirmacao) { // se o login for bem-sucedido
+      final user = controller.usuarioLogado;
+
+      bool vOng = (user is Ong);
+      temaController.setProfileType(OngProfile: vOng);
+      
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const Home()), // navega para a tela principal do aplicativo
       );

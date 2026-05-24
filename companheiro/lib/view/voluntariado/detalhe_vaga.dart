@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class DetalheVaga extends StatelessWidget {
   const DetalheVaga({super.key});
-  void _inscrever() { // função para se inscrever na vaga
+  void inscrever() { // função para se inscrever na vaga
   }
   
   @override
