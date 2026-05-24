@@ -78,24 +78,43 @@ class Autenticador extends ChangeNotifier {
   }) async {
     msgErro = null;
 
-    // se os campos obrigatórios não estão preenchidos
+    //________________________________________________senhas iguais____________________________________
+    if (senha != confirmacaoSenha) { 
+      msgErro = 'As senhas não coincidem.';
+      notifyListeners();
+      return false;
+    }
+
+    //_________________________se os campos obrigatórios não estão preenchidos_________________________
     if (nome.isEmpty || email.isEmpty || telefone.isEmpty || senha.isEmpty || confirmacaoSenha.isEmpty) {
       msgErro = 'Preencha todos os campos obrigatórios.';
       notifyListeners();
       return false;
     }
-//____________________________________________________email_______________________________________
-    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$'); // expressão regular para validar e-mail
-    if (!emailRegex.hasMatch(email)) {
-      msgErro = 'E-mail inválido.';
+
+    try {
+      await _auth.createUserWithEmailAndPassword(email: email, password: senha);
       notifyListeners();
       return false;
     }
+    on FirebaseAuthException catch (e) {
 
-    final existente = usuarios.any((u) => u.email == email); // verificar se o e-mail já existe
-    if (existente) {
-      msgErro = 'E-mail já cadastrado.';
-      notifyListeners();
+      //________________________________________________email__________________________________________
+      if (e.code == 'email-already-in-use'){
+        msgErro = 'E-mail já cadastrado';
+      }
+      else if (e.code == 'invalid-email'){
+        msgErro = 'E-mail inválido';
+      }
+      //________________________________________________senha___________________________________________
+      else if (e.code == 'weak-password'){
+        msgErro = 'Senha fraca';
+      }
+      //_____________________________________________outros erros_______________________________________
+      else {
+        msgErro = 'Erro ao cadastrar';
+      }
+
       return false;
     }
 //_______________________________________________________cnpj______________________________________
@@ -108,12 +127,6 @@ class Autenticador extends ChangeNotifier {
         notifyListeners();
         return false;
       }    
-//________________________________________________senhas iguais____________________________________
-    if (senha != confirmacaoSenha) { 
-      msgErro = 'As senhas não coincidem.';
-      notifyListeners();
-      return false;
-    }
 //________________________________________________novo_usuario_____________________________________
 //                                     usuário ONG
     final novaOng = Ong( 
@@ -158,15 +171,26 @@ class Autenticador extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-    final existe = usuarios.any((u) => u.email == email) || email == 'gui@teste.com'; // verificar se o e-mail existe
-    if (!existe) {
-      msgErro = 'E-mail não encontrado.';
+
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return false;
+    }
+    on FirebaseAuthException catch (e){
+      if (e.code == 'user-not-found'){
+        msgErro = 'E-mail não cadastrado';
+      }
+      else {
+        msgErro = 'Erro ao recuperar a senha';
+      }
+
       notifyListeners();
       return false;
     }
-    notifyListeners(); // notificar ouvintes
-    return true;
   }
-  
+}
 
+Future<void> logout() async {
+  await _auth.signOut();
+  notifyListeners();
 }

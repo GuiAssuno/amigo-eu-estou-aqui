@@ -72,7 +72,7 @@ void _confirmarLogout() {
           ),
           ElevatedButton( 
             onPressed: () {
-              Provider.of<AuthController>(context, listen: false).logout();
+              await Provider.of<AuthController>(context, listen: false).logout();
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const TelaLogin()),
                 (route) => false,
