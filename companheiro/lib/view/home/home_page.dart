@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http; 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +16,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  String? _petImageUrl; // Variável para guardar a URL da imagem que vem da API
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _buscarPetDoDia(); // Busca imagem assim que a tela carrega
+  }
+
+  //=================================================================================================
+  //=====================================  REQUISIÇÃO GET ===========================================
+  //=================================================================================================
+  Future<void> _buscarPetDoDia() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Fazendo a requisição para a Dog API
+      final url = Uri.parse('https://dog.ceo/api/breeds/image/random');
+      final response = await http.get(url);
+      
+      // Se conseguir pega o link da imagem do JSON 
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body); 
+        setState(() {
+          _petImageUrl = data['message']; // message é onde fica a URL
+        });
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar pet: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
 //=================================================================================================
 //=====================================      FUNÇÃO PARA CONFIRMAR O LOGOUT     ===================
@@ -46,9 +86,6 @@ void _confirmarLogout() {
     );
   }
 
-//=================================================================================================
-//==============================================     PAGINA    ====================================
-//=================================================================================================
   @override
   Widget build(BuildContext context) {
     return Scaffold(  
@@ -68,7 +105,6 @@ void _confirmarLogout() {
           PopupMenuButton<String>(
             icon: Icon(Icons.account_circle, size: 22, color: const Color(0xffE7DFD5)),
 //__________________________________________opções_do_menu_________________________________________
-
             onSelected: (opcao) {
               if (opcao == 'sobre') {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => const TelaSobre()));
@@ -87,7 +123,6 @@ void _confirmarLogout() {
               ),
               const PopupMenuDivider(),
 //________________________________________________________opção profile__________________________________________
-
               const PopupMenuItem(value: 'profile', child: Row(
                 children: [Icon(Icons.account_circle_outlined, size: 18, color: Color(0xff212A3E)), SizedBox(width: 8), Text('Perfil', )],
               )),
@@ -112,10 +147,61 @@ void _confirmarLogout() {
 //=================================================================================================
 //==============================================     CORPO    =====================================
 //=================================================================================================
-
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Focinho do Dia 🐾',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff212A3E),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Milhares de animalzinhos estão esperando por um lar. Que tal adotar um amiginho hoje?',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, color: Colors.black54),
+            ),
+            const SizedBox(height: 24),
+//________________________________________________CARD DA API________________________________________________
+            Expanded(
+              child: Card(
+                elevation: 4,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                child: _isLoading 
+                    ? const Center(child: CircularProgressIndicator()) // Fica carregando enquanto API não responde (fdp carrega logo)
+                    : _petImageUrl != null
+                        ? Image.network(
+                            _petImageUrl!,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const Center(child: CircularProgressIndicator());
+                            },
+                          )
+                        : const Center(child: Text('Nenhum pet encontrado.')),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+//____________________________________BOTÃO PARA CHAMAR A API NOVAMENTE______________________________________
+            ElevatedButton.icon(
+              onPressed: _buscarPetDoDia,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Ver outro focinho'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ],
+        ),
       ),
-
     );
   }
 }
