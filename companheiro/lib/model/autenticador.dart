@@ -42,27 +42,12 @@ class Autenticador extends ChangeNotifier {
       else if (e.code == 'invalid-email') {
         msgErro = 'E-mail ou senha incorretos';
       }
+      else if (email.isEmpty || senha.isEmpty){
+        msgErro = 'Preencha todos os campos';
+      }
       else {
         msgErro = 'Erro ao fazer o login';
       }
-    }
-
-    if (email.isEmpty || senha.isEmpty) { // campos vazios
-      msgErro = 'Preencha todos os campos.'; // mensagem de erro para campos vazios
-      notifyListeners(); // notificar ouvintes
-      return false; // login falhou
-    }
-
-    if (email == 'gui@teste.com' && senha == '1234') { // usuário demo
-      usuarioLogado = Usuario( // criar usuário logado
-        id: '0',
-        nome: 'Gui',
-        email: email,
-        telefone: '(16) 99999-0000',
-        senha: senha,
-      );
-      notifyListeners();
-      return true;
     }
   }
 
@@ -95,7 +80,7 @@ class Autenticador extends ChangeNotifier {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: senha);
       notifyListeners();
-      return false;
+      return true;
     }
     on FirebaseAuthException catch (e) {
 
@@ -126,34 +111,7 @@ class Autenticador extends ChangeNotifier {
         msgErro = 'CNPJ inválido.';
         notifyListeners();
         return false;
-      }    
-//________________________________________________novo_usuario_____________________________________
-//                                     usuário ONG
-    final novaOng = Ong( 
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        cnpj: cnpj, 
-        nome: nome,
-        email: email,
-        senha: senha,
-        telefone: telefone,
-      );
-      usuarios.add(novaOng); 
-      usuarioLogado = novaOng; 
-    } else {
-//                                    usuário comum
-      final novoUsuario = Usuario( 
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        nome: nome,
-        email: email,
-        senha: senha,
-        telefone: telefone,
-      );
-      usuarios.add(novoUsuario); 
-      usuarioLogado = novoUsuario; 
-    }
-    notifyListeners();  
-    return true; 
-  } 
+      }
 
 //=================================================================================================
 //=====================================      RECUPERAR SENHA     ==================================
@@ -188,9 +146,10 @@ class Autenticador extends ChangeNotifier {
       return false;
     }
   }
-}
 
-Future<void> logout() async {
+  Future<void> logout() async {
   await _auth.signOut();
+  usuarioLogado = null;
   notifyListeners();
+  }
 }

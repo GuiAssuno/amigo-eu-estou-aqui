@@ -31,7 +31,7 @@ void _confirmarLogout() {
             child: const Text('Cancelar'),
           ),
           ElevatedButton( 
-            onPressed: () {
+            onPressed: () async {
               await Provider.of<AuthController>(context, listen: false).logout();
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const TelaLogin()),

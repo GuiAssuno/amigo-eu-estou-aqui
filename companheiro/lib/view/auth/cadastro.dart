@@ -65,7 +65,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
 
       Navigator.pop(context);
     } else {
-      // Mostra o erro na tela (ex: "Email já cadastrado")
+      // Mostra o   na tela (ex: "Email já cadastrado")
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(controller.erro ?? 'Erro no cadastro')),
       );

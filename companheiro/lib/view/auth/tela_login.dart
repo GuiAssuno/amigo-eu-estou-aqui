@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'esqueceu_senha.dart';
 import 'cadastro.dart';
 import '/view/home/home.dart';
+import '/view/home/home_page.dart';
 import '/controller/auth_controle.dart';
 import '/controller/tema_controle.dart';
 
@@ -39,7 +40,7 @@ class _TelaLoginState extends State<TelaLogin> {
     final temaController = context.read<TemaController>();
     bool confirmacao;
 
-    confirmacao = await controller.fazarLogin( // chama a função de login do controlador de autenticação
+    confirmacao = await controller.fazerLogin( // chama a função de login do controlador de autenticação
       emailController.text, 
       passwordController.text);
 
