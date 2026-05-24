@@ -40,8 +40,8 @@ class AuthController extends ChangeNotifier{
     );
   }
   
-  void logout() { // realizar logout
-    autenticador.usuarioLogado = null; // limpar usuário logado
+  Future<void> logout() async { // realizar logout
+    await autenticador.logout();
     notifyListeners();
   }
 }
