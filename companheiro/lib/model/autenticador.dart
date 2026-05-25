@@ -6,6 +6,7 @@ import '/model/modelos.dart';
 // gerenciador de autenticação
 class Autenticador extends ChangeNotifier { 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
    // banco de usuários simulado, todos os usuários cadastrados ficam aqui
   Usuario? usuarioLogado; // usuário logado, null se não houver nenhum usuário logado
   String? msgErro; // armazena o erro para no snackbar
@@ -78,21 +79,44 @@ class Autenticador extends ChangeNotifier {
       return false;
     }
 
+    //_______________________________________________________cnpj______________________________________
+    bool userOng = cnpj != null && cnpj.isNotEmpty;
+    userOng = (userOng);
+    if (userOng) {//                                expressão regular para validar CNPJ Alfanumérico
+      final cnpjRegex = RegExp(r'^[A-Za-z0-9]{2}\.[A-Za-z0-9]{3}\.[A-Za-z0-9]{3}/[A-Za-z0-9]{4}-\d{2}$'); 
+      if (!cnpjRegex.hasMatch(cnpj)) {
+        msgErro = 'CNPJ inválido.';
+        notifyListeners();
+        return false;
+      }
+    }
+
     try {
+      UserCredential credencial = 
       await _auth.createUserWithEmailAndPassword(email: email, password: senha);
 
-      //_______________________________________________________cnpj______________________________________
-      bool userOng = cnpj != null && cnpj.isNotEmpty;
-      userOng = (userOng);
-      if (userOng) {//                                expressão regular para validar CNPJ Alfanumérico
-        final cnpjRegex = RegExp(r'^[A-Za-z0-9]{2}\.[A-Za-z0-9]{3}\.[A-Za-z0-9]{3}/[A-Za-z0-9]{4}-\d{2}$'); 
-        if (!cnpjRegex.hasMatch(cnpj)) {
-          msgErro = 'CNPJ inválido.';
-          notifyListeners();
-          return false;
-        }
+      String uid = credencial.user!.uid;
+
+      if(userOng){
+        await _firestore.collection('ongs').doc(uid).set({
+        'uid': uid,
+        'nome': nome,
+        'email': email,
+        'telefone': telefone,
+        'cnpj': cnpj,
+        'tipo': 'ong',
+        });
+      } else {
+        await _firestore.collection('usuarios').doc(uid).set({
+        'uid': uid,
+        'nome': nome,
+        'email': email,
+        'telefone': telefone,
+        'tipo': 'usuario',
+        });
       }
 
+      notifyListeners();
       return true;
     }
     on FirebaseAuthException catch (e) {
