@@ -27,7 +27,6 @@ class Autenticador extends ChangeNotifier {
 
     try{
       await _auth.signInWithEmailAndPassword(email: email, password: senha);
-
       notifyListeners();
       return true;
     }
@@ -49,6 +48,7 @@ class Autenticador extends ChangeNotifier {
         msgErro = 'Erro ao fazer o login';
       }
     }
+    return false;
   }
 
 //=================================================================================================
@@ -79,7 +79,19 @@ class Autenticador extends ChangeNotifier {
 
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: senha);
-      notifyListeners();
+
+      //_______________________________________________________cnpj______________________________________
+      bool userOng = cnpj != null && cnpj.isNotEmpty;
+      userOng = (userOng);
+      if (userOng) {//                                expressão regular para validar CNPJ Alfanumérico
+        final cnpjRegex = RegExp(r'^[A-Za-z0-9]{2}\.[A-Za-z0-9]{3}\.[A-Za-z0-9]{3}/[A-Za-z0-9]{4}-\d{2}$'); 
+        if (!cnpjRegex.hasMatch(cnpj)) {
+          msgErro = 'CNPJ inválido.';
+          notifyListeners();
+          return false;
+        }
+      }
+
       return true;
     }
     on FirebaseAuthException catch (e) {
@@ -102,16 +114,7 @@ class Autenticador extends ChangeNotifier {
 
       return false;
     }
-//_______________________________________________________cnpj______________________________________
-    bool userOng =false;
-    userOng = (cnpj != null && cnpj.isNotEmpty);
-    if (userOng) {//                                expressão regular para validar CNPJ Alfanumérico
-      final cnpjRegex = RegExp(r'^[A-Za-z0-9]{2}\.[A-Za-z0-9]{3}\.[A-Za-z0-9]{3}/[A-Za-z0-9]{4}-\d{2}$'); 
-      if (!cnpjRegex.hasMatch(cnpj)) {
-        msgErro = 'CNPJ inválido.';
-        notifyListeners();
-        return false;
-      }
+  }  
 
 //=================================================================================================
 //=====================================      RECUPERAR SENHA     ==================================
@@ -132,7 +135,7 @@ class Autenticador extends ChangeNotifier {
 
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      return false;
+      return true;
     }
     on FirebaseAuthException catch (e){
       if (e.code == 'user-not-found'){

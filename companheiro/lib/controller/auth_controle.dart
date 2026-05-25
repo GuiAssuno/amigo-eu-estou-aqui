@@ -22,7 +22,7 @@ class AuthController extends ChangeNotifier{
     }
 
     on FirebaseAuthException catch (e){
-      erro = e.message;
+      autenticador.msgErro = e.message;
       notifyListeners();
       return false;
     }
