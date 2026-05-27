@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"amigo-eu-estou-aqui-4d4d0","appId":"1:960080112763:android:21934c0cd14144df6d86de","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"amigo-eu-estou-aqui-4d4d0","configurations":{"android":"1:960080112763:android:21934c0cd14144df6d86de","ios":"1:960080112763:ios:adf2d40f6a5738296d86de","web":"1:960080112763:web:2f72db9e7173f9996d86de"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "amigo-eu-estou-aqui-4d4d0",
+          "appId": "1:960080112763:android:21934c0cd14144df6d86de",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "amigo-eu-estou-aqui-4d4d0",
+          "configurations": {
+            "android": "1:960080112763:android:21934c0cd14144df6d86de",
+            "ios": "1:960080112763:ios:adf2d40f6a5738296d86de",
+            "web": "1:960080112763:web:2f72db9e7173f9996d86de"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
