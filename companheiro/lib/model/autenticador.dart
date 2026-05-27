@@ -40,10 +40,19 @@ class Autenticador extends ChangeNotifier {
       else if (e.code == 'wrong-password') {
         msgErro = 'E-mail ou senha incorretos';
       }
-      else if (e.code == 'invalid-email') {
+      else if (e.code == 'invalid-credentials') {
         msgErro = 'E-mail ou senha incorretos';
       }
-      else if (email.isEmpty || senha.isEmpty){
+      else if (e.code == 'invalid-email') {
+        msgErro = 'E-mail inválido';
+      }
+      else if (e.code == 'too-many-requests') {
+        msgErro = 'Tentativas excedidas, tente novamente mais tarde';
+      }
+      else if (e.code == 'network-request-failed') {
+        msgErro = 'Falha na conexão com a internet';
+      }
+      else if (email.isEmpty || senha.isEmpty) {
         msgErro = 'Preencha todos os campos';
       }
       else {
@@ -121,16 +130,20 @@ class Autenticador extends ChangeNotifier {
     }
     on FirebaseAuthException catch (e) {
 
-      //________________________________________________email__________________________________________
-      if (e.code == 'email-already-in-use'){
+      //________________________________________________email___________________________________________
+      if (e.code == 'email-already-in-use') {
         msgErro = 'E-mail já cadastrado';
       }
-      else if (e.code == 'invalid-email'){
+      else if (e.code == 'invalid-email') {
         msgErro = 'E-mail inválido';
       }
       //________________________________________________senha___________________________________________
-      else if (e.code == 'weak-password'){
+      else if (e.code == 'weak-password') {
         msgErro = 'Senha fraca';
+      }
+      //_______________________________________________internet_________________________________________
+      else if (e.code == 'network-request-failed') {
+        msgErro = 'Falha na conexão com a internet';
       }
       //_____________________________________________outros erros_______________________________________
       else {
@@ -165,6 +178,9 @@ class Autenticador extends ChangeNotifier {
     on FirebaseAuthException catch (e){
       if (e.code == 'user-not-found'){
         msgErro = 'E-mail não cadastrado';
+      }
+      else if (e.code == 'invalid-email'){
+        msgErro = 'E-mail inválido';
       }
       else {
         msgErro = 'Erro ao recuperar a senha';
