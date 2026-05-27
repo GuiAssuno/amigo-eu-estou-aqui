@@ -64,10 +64,18 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
       context.read<TemaController>().setProfileType(OngProfile: vOng);
 
       Navigator.pop(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Cadastro realizado com sucesso!'),
+          backgroundColor: Colors.green,
+        ),
+      );
     } else {
       // Mostra o   na tela (ex: "Email já cadastrado")
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(controller.erro ?? 'Erro no cadastro')),
+        SnackBar(content: Text(controller.erro ?? 'Erro no cadastro'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
