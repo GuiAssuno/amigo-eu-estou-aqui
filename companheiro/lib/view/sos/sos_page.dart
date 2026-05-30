@@ -14,7 +14,7 @@ import '/controller/auth_controle.dart';
 // ─────────────────────────────────────────────
 
 class SosReport {
-  final File foto;
+  final File? foto;
   final double latitude;
   final double longitude;
   final String enderecoFisico;
@@ -22,7 +22,7 @@ class SosReport {
   final DateTime criadoEm;
 
   SosReport({
-    required this.foto,
+    this.foto,
     required this.latitude,
     required this.longitude,
     required this.enderecoFisico,
@@ -46,6 +46,34 @@ class _SosPageState extends State<SosPage> {
   final List<SosReport> _reportes = [];
   bool _carregando = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _carregarSos();
+  }
+
+  Future<void> _carregarSos() async {
+    final auth =
+        Provider.of<AuthController>(context, listen: false);
+
+    final doc = await auth.autenticador.buscarMeuSos();
+
+    if (doc == null || !doc.exists) return;
+
+    final dados = doc.data()!;
+
+    setState(() {
+      _reportes.add(
+        SosReport(
+          foto: null,
+          latitude: 0,
+          longitude: 0,
+          enderecoFisico: dados['cidade'] ?? '',
+          relatoUsuario: dados['descricao'] ?? '',
+        ),
+      );
+    });
+  }
   // ── Abrir Google Maps ──────────────────────
   Future<void> _abrirMapa(double lat, double lng) async {
     final uri = Uri.parse(
@@ -205,7 +233,6 @@ class _SosPageState extends State<SosPage> {
   Future<void> _criarNovoAlerta() async {
     // 1. Escolher foto
     final foto = await _escolherFoto();
-    if (foto == null) return;
 
     setState(() => _carregando = true);
 
@@ -368,8 +395,8 @@ class _SosCard extends StatelessWidget {
             // ── Foto ──────────────────────────
             SizedBox(
               height: 200,
-              child: reporte.foto.existsSync()
-                  ? Image.file(reporte.foto, fit: BoxFit.cover)
+              child: reporte.foto!= null && reporte.foto!.existsSync()
+                  ? Image.file(reporte.foto!, fit: BoxFit.cover)
                   : Container(
                       color: Colors.grey[300],
                       child: const Icon(

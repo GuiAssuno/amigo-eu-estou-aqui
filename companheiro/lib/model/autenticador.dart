@@ -248,13 +248,22 @@ class Autenticador extends ChangeNotifier {
       throw Exception('Usuario deslogado');
     }
 
-    await _firestore.collection('sos').add({
+    await _firestore.collection('sos').doc(usuarioLogado!.id).set({
       'uid': usuarioLogado!.id,
       'nomeUsuario': usuarioLogado!.nome,
       'titulo': titulo,
       'descricao': descricao,
       'cidade': cidade,
-      'dataCricao': Timestamp.now(),
+      'dataCriacao': Timestamp.now(),
     });
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>?> buscarMeuSos() async {
+    if (usuarioLogado == null) return null;
+
+    return await _firestore
+        .collection('sos')
+        .doc(usuarioLogado!.id)
+        .get();
   }
 }
