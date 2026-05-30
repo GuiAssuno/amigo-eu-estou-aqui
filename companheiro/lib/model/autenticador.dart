@@ -9,7 +9,8 @@ class Autenticador extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
    // banco de usuários simulado, todos os usuários cadastrados ficam aqui
   Usuario? usuarioLogado; // usuário logado, null se não houver nenhum usuário logado
-  String? msgErro; // armazena o erro para no snackbar
+  String? msgErro; // armazena o erro para a snackbar
+  String? msgAviso; // armazena o erro para a snackbar
 
   Usuario? get userlogado => usuarioLogado; // usuário logado
   String? get erro => msgErro; // mensagem de erro, texto de erro  
@@ -170,24 +171,13 @@ class Autenticador extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-    
-    final usuario = await _firestore.collection('usuarios').where('email', isEqualTo: email).get();
-    final ong = await _firestore.collection('ongs').where('email', isEqualTo: email).get();
-      
-    if (usuario.docs.isEmpty && ong.docs.isEmpty){
-      msgErro = "E-mail não cadastrado";
-      return false;
-    }
 
     try {
       await _auth.sendPasswordResetEmail(email: email);
       return true;
     }
     on FirebaseAuthException catch (e){
-      if (e.code == 'user-not-found'){
-        msgErro = 'E-mail não cadastrado';
-      }
-      else if (e.code == 'invalid-email'){
+      if (e.code == 'invalid-email'){
         msgErro = 'E-mail inválido';
       }
       else {

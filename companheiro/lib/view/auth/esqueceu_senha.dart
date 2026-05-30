@@ -150,6 +150,12 @@ Future<void> recuperar() async {
           textAlign: TextAlign.center,
           style: const TextStyle(color: Color(0xFF888780), fontSize: 14),
         ),
+        const SizedBox(height: 12),
+        Text(
+          'Obs: Em caso de não recebimento do e-mail, por favor certifique-se de que o usuário é cadastrado.',
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Color(0xFF888780), fontSize: 14),
+        ),
         const SizedBox(height: 32),
         SizedBox(
           width: double.infinity,
