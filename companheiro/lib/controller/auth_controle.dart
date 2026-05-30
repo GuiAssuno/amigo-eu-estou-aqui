@@ -49,4 +49,22 @@ class AuthController extends ChangeNotifier{
     await autenticador.deletarSos(sosId);
     notifyListeners();
   }
+
+  String? validarUsuario({
+    required String nome,
+    required String email,
+    required String telefone,
+    String? senha,
+    String? confirmacaoSenha,
+    String? cnpj,
+  }) {
+    return autenticador.validarUsuario(
+      nome: nome,
+      email: email,
+      telefone: telefone,
+      senha: senha,
+      confirmacaoSenha: confirmacaoSenha,
+      cnpj: cnpj,
+    );
+  }
 }

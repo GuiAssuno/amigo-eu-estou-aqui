@@ -49,6 +49,23 @@ class _ProfilePageState extends State<ProfilePage> {
     
     final authController = Provider.of<AuthController>(context, listen: false);
     final user = authController.usuarioLogado;
+    final ehOng = user is Ong;
+    
+    final erro = authController.validarUsuario(
+      nome: _nomeController.text.trim(),
+      email: user?.email ?? '',
+      telefone: _telefoneController.text.trim(),
+      cnpj: ehOng ? _cnpjController.text.trim() : null,
+    );
+
+    if (erro != null) {
+      setState(() => _salvando = false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(erro), backgroundColor: Colors.red),
+      );
+      return;
+    }
 
     try {
       String colecao = (user is Ong) ? 'ongs' : 'usuarios';

@@ -272,4 +272,44 @@ class Autenticador extends ChangeNotifier {
   Future<void> deletarSos(String sosId) async {
     await _firestore.collection('sos').doc(sosId).delete();
   }
+
+  String? validarUsuario({
+    required String nome,
+    required String email,
+    required String telefone,
+    String? senha,
+    String? confirmacaoSenha,
+    String? cnpj,
+  }) {
+    if (nome.isEmpty || email.isEmpty || telefone.isEmpty) {
+      return 'Preencha todos os campos obrigatórios.';
+    }
+
+    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(email)) {
+      return 'E-mail inválido.';
+    }
+
+    final telefoneRegex = RegExp(r'^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$');
+    if (!telefoneRegex.hasMatch(telefone)) {
+      return 'Telefone/Celular inválido.';
+    }
+
+    if (senha != null && confirmacaoSenha != null) {
+      if (senha != confirmacaoSenha) {
+        return 'As senhas não coincidem.';
+      }
+    }
+
+    if (cnpj != null && cnpj.isNotEmpty) {
+      final cnpjRegex = RegExp(
+        r'^[A-Za-z0-9]{2}\.[A-Za-z0-9]{3}\.[A-Za-z0-9]{3}/[A-Za-z0-9]{4}-\d{2}$',
+      );
+      if (!cnpjRegex.hasMatch(cnpj)) {
+        return 'CNPJ inválido.';
+      }
+    }
+
+    return null;
+  }
 }
