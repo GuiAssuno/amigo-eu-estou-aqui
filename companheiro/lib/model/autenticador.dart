@@ -171,17 +171,11 @@ class Autenticador extends ChangeNotifier {
       return false;
     }
     
-    try{
-      final usuario = await _firestore.collection('usuarios').where('email', isEqualTo: email).get();
-      final ong = await _firestore.collection('ongs').where('email', isEqualTo: email).get();
+    final usuario = await _firestore.collection('usuarios').where('email', isEqualTo: email).get();
+    final ong = await _firestore.collection('ongs').where('email', isEqualTo: email).get();
       
-      if (usuario.docs.isEmpty && ong.docs.isEmpty){
-        msgErro = "E-mail não cadastrado";
-        return false;
-      }
-    } catch (e) {
-      msgErro = "Erro ao acessar o banco";
-      notifyListeners();
+    if (usuario.docs.isEmpty && ong.docs.isEmpty){
+      msgErro = "E-mail não cadastrado";
       return false;
     }
 
