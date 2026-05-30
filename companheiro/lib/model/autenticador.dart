@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
 import '/model/modelos.dart';
 
 // gerenciador de autenticação
@@ -236,5 +237,24 @@ class Autenticador extends ChangeNotifier {
   await _auth.signOut();
   usuarioLogado = null;
   notifyListeners();
+  }
+
+  Future<void> criarSos({
+    required String titulo,
+    required String descricao,
+    required String cidade,
+  }) async {
+    if (usuarioLogado == null){
+      throw Exception('Usuario deslogado');
+    }
+
+    await _firestore.collection('sos').add({
+      'uid': usuarioLogado!.id,
+      'nomeUsuario': usuarioLogado!.nome,
+      'titulo': titulo,
+      'descricao': descricao,
+      'cidade': cidade,
+      'dataCricao': Timestamp.now(),
+    });
   }
 }

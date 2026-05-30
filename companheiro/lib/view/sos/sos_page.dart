@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import '/controller/auth_controle.dart';
 
 // ─────────────────────────────────────────────
 //  MODEL
@@ -223,6 +227,24 @@ class _SosPageState extends State<SosPage> {
 
       // 4. Pedir relato (fora do setState para aguardar input)
       final relato = await _pedirRelato() ?? '';
+
+      final authController = Provider.of<AuthController>(context, listen: false);
+      String cidade = '';
+
+      try{
+        final placemarks = await placemarkFromCoordinates(posicao.latitude, posicao.longitude);
+        if (placemarks.isNotEmpty) {
+          cidade = placemarks.first.locality ?? '';
+        }
+      } catch (_) {}
+
+      await authController.criarSos(
+        titulo: 'SOS',
+        descricao: relato.isEmpty
+          ?'SOS enviado pleo aplicativo'
+          : relato,
+        cidade: cidade,
+      );
 
       // 5. Salvar na lista
       setState(() {

@@ -32,4 +32,16 @@ class AuthController extends ChangeNotifier{
     await autenticador.logout();
     notifyListeners();
   }
+
+  Future<void> criarSos({
+    required String titulo,
+    required String descricao,
+    required String cidade,
+  }) async {
+    await autenticador.criarSos(
+      titulo: titulo,
+      descricao: descricao,
+      cidade: cidade,
+    );
+  }
 }

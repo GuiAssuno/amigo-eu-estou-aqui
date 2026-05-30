@@ -78,3 +78,19 @@ class Vaga {
     this.inscrito = false,
   });
 }
+
+class Sos {
+  final String id;
+  final String uid;
+  final String titulo;
+  final String descricao;
+  final String cidade;
+
+  Sos({
+    required this.id,
+    required this.uid,
+    required this.titulo,
+    required this.descricao,
+    required this.cidade,
+  });
+}
