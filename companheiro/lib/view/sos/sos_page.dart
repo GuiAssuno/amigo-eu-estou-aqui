@@ -14,6 +14,7 @@ import '/controller/auth_controle.dart';
 // ─────────────────────────────────────────────
 
 class SosReport {
+  final String id;
   final File? foto;
   final double latitude;
   final double longitude;
@@ -22,6 +23,7 @@ class SosReport {
   final DateTime criadoEm;
 
   SosReport({
+    required this.id,
     this.foto,
     required this.latitude,
     required this.longitude,
@@ -43,7 +45,7 @@ class SosPage extends StatefulWidget {
 }
 
 class _SosPageState extends State<SosPage> {
-  final List<SosReport> _reportes = [];
+  List<SosReport> _reportes = [];
   bool _carregando = false;
 
   @override
@@ -56,22 +58,28 @@ class _SosPageState extends State<SosPage> {
     final auth =
         Provider.of<AuthController>(context, listen: false);
 
-    final doc = await auth.autenticador.buscarMeuSos();
+    final uid = auth.usuarioLogado.id;
 
-    if (doc == null || !doc.exists) return;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('sos')
+        .where('uid', isEqualTo: uid)
+        .get();
 
-    final dados = doc.data()!;
+    final lista = snapshot.docs.map((doc) {
+      final dados = doc.data();
+
+      return SosReport(
+        id: doc.id,
+        foto: null,
+        latitude: 0,
+        longitude: 0,
+        enderecoFisico: dados['cidade'] ?? '',
+        relatoUsuario: dados['descricao'] ?? '',
+      );
+    }).toList();
 
     setState(() {
-      _reportes.add(
-        SosReport(
-          foto: null,
-          latitude: 0,
-          longitude: 0,
-          enderecoFisico: dados['cidade'] ?? '',
-          relatoUsuario: dados['descricao'] ?? '',
-        ),
-      );
+      _reportes = lista;
     });
   }
   // ── Abrir Google Maps ──────────────────────
@@ -278,6 +286,7 @@ class _SosPageState extends State<SosPage> {
         _reportes.insert(
           0,
           SosReport(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
             foto: foto,
             latitude: posicao.latitude,
             longitude: posicao.longitude,
@@ -326,6 +335,14 @@ class _SosPageState extends State<SosPage> {
                       reporte: reporte,
                       onTap: () =>
                           _abrirMapa(reporte.latitude, reporte.longitude),
+
+                      onDelete: () async {
+                        final auth = Provider.of<AuthController>(context, listen: false);
+                        await auth.deletarSos(reporte.id);
+                        setState(() {
+                          _reportes.removeWhere((r) => r.id == reporte.id);
+                        });
+                      },
                     );
                   },
                 ),
@@ -368,8 +385,9 @@ class _SosPageState extends State<SosPage> {
 class _SosCard extends StatelessWidget {
   final SosReport reporte;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
-  const _SosCard({required this.reporte, required this.onTap});
+  const _SosCard({required this.reporte, required this.onTap, required this.onDelete});
 
   String _formatarData(DateTime dt) {
     final d = dt;
@@ -413,6 +431,13 @@ class _SosCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: onDelete,
+                    ),
+                  ),
                   // Data/hora
                   Text(
                     _formatarData(reporte.criadoEm),

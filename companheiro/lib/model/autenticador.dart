@@ -239,7 +239,7 @@ class Autenticador extends ChangeNotifier {
   notifyListeners();
   }
 
-  Future<void> criarSos({
+  Future<String> criarSos({
     required String titulo,
     required String descricao,
     required String cidade,
@@ -248,7 +248,7 @@ class Autenticador extends ChangeNotifier {
       throw Exception('Usuario deslogado');
     }
 
-    await _firestore.collection('sos').doc(usuarioLogado!.id).set({
+    final docRef = await _firestore.collection('sos').add({
       'uid': usuarioLogado!.id,
       'nomeUsuario': usuarioLogado!.nome,
       'titulo': titulo,
@@ -256,6 +256,8 @@ class Autenticador extends ChangeNotifier {
       'cidade': cidade,
       'dataCriacao': Timestamp.now(),
     });
+
+    return docRef.id;
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>?> buscarMeuSos() async {
@@ -265,5 +267,9 @@ class Autenticador extends ChangeNotifier {
         .collection('sos')
         .doc(usuarioLogado!.id)
         .get();
+  }
+
+  Future<void> deletarSos(String sosId) async {
+    await _firestore.collection('sos').doc(sosId).delete();
   }
 }

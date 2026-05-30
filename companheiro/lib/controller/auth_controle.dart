@@ -44,4 +44,9 @@ class AuthController extends ChangeNotifier{
       cidade: cidade,
     );
   }
+
+  Future<void> deletarSos(String sosId) async {
+    await autenticador.deletarSos(sosId);
+    notifyListeners();
+  }
 }
