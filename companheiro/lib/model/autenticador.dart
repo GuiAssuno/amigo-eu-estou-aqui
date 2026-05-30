@@ -89,6 +89,13 @@ class Autenticador extends ChangeNotifier {
       return false;
     }
 
+    final telefoneRegex = RegExp(r'^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$');
+    if (!telefoneRegex.hasMatch(telefone)) {
+      msgErro = 'Telefone/Celular inválido.';
+      notifyListeners();
+      return false;
+    }
+
     //_______________________________________________________cnpj______________________________________
     bool userOng = cnpj != null && cnpj.isNotEmpty;
     userOng = (userOng);

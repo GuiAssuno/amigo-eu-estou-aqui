@@ -172,7 +172,13 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                             border: OutlineInputBorder(),
                             hintText: '(00) 00000-0000',
                           ),
-                          validator: (v) => (v == null || v.trim().isEmpty) ? 'Informe seu telefone.' : null,
+                          validator: (v) {
+                            if (v == null || v.trim().isEmpty) return 'Informe seu telefone.';
+                            final telefoneRegex = RegExp(r'^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$');
+                            if (!telefoneRegex.hasMatch(v)) {
+                              return 'Telefone/Celular inválido.';
+                            }
+                          }
                         ),
                         const SizedBox(height: 14),
 // _____________________________________________SENHA______________________________________________
