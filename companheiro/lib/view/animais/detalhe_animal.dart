@@ -31,7 +31,7 @@ class DetalheAnimal extends StatelessWidget {
                 onPressed: () {
                   
                 },
-                child: Text('Adotar'),
+                child: Text('Contactar Ong'),
               ),
             ],
           ),
