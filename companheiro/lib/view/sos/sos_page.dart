@@ -219,7 +219,7 @@ class _SosPageState extends State<SosPage> {
             ),
             ListTile(
               leading: const Icon(Icons.close),
-              title: const Text('Cancelar'),
+              title: const Text('Sem foto'),
               onTap: () => Navigator.of(ctx).pop(),
             ),
           ],
