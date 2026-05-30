@@ -30,8 +30,44 @@ class Autenticador extends ChangeNotifier {
 
     try{
       await _auth.signInWithEmailAndPassword(email: email, password: senha);
+
+      final firebaseUser = _auth.currentUser!;
+      final usuarioDoc = await _firestore.collection('usuarios').doc(firebaseUser.uid).get();
+      final ongDoc = await _firestore.collection('ongs').doc(firebaseUser.uid).get();
+
+      if(usuarioDoc.exists){
+        final dados = usuarioDoc.data()!;
+
+        usuarioLogado = Usuario(
+          id: firebaseUser.uid, 
+          nome: dados['nome'] ?? '', 
+          email: dados['email'] ?? '', 
+          telefone: dados['telefone'] ?? '', 
+          senha: '',
+        );
+
+        notifyListeners();
+        return true;
+      }
+      
+      if(ongDoc.exists){
+        final dados = ongDoc.data()!;
+
+        usuarioLogado = Ong(
+          id: firebaseUser.uid, 
+          nome: dados['nome'] ?? '', 
+          email: dados['email'] ?? '', 
+          telefone: dados['telefone'] ?? '', 
+          senha: '',
+          cnpj: dados['cnpj'] ?? '',
+          );
+
+        notifyListeners();
+        return true;
+      }
+
+      msgErro = 'Usuario não encontrado no banco';
       notifyListeners();
-      return true;
     }
 
     on FirebaseAuthException catch (e) {

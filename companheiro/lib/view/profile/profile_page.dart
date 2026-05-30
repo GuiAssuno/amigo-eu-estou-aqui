@@ -63,9 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
         if (user is Ong) 'cnpj': _cnpjController.text.trim(),
       });
 
-      // Aqui você também deve atualizar o objeto local no seu Controller
-      // (Dica: implemente um método no AuthController para recarregar o usuário)
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Dados atualizados com sucesso! 🐾'), backgroundColor: Colors.green),
       );
@@ -83,6 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthController>(context).usuarioLogado;
+
     bool ehOng = user is Ong;
 
     return Scaffold(
